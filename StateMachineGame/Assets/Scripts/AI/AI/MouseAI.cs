@@ -2,12 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AI : MonoBehaviour
+public class MouseAI : AI
 {
-
-    Behaviour currentBehaviour; //Current behavior
-    
-
+    Behaviour currentBehaviour = new Wander();
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +14,7 @@ public class AI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //check enter conditions on behaviours
         
     }
 }
