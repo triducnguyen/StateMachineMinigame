@@ -8,7 +8,7 @@ public class SearchBehaviour : Behaviour, IBehaviour
 
     public SearchBehaviour
         (
-            Tuple<List<Func<bool>>,List<Func<bool>>> transitionConditions,
+            Tuple<List<Condition>,List<Condition>> transitionConditions
             
         ) 
         :base //set the base constructor arguments

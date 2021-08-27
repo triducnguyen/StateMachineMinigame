@@ -1,44 +1,82 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public abstract class Behaviour : IBehaviour
 {
-    public List<Func<bool>> EnterConditions
+    public AI ai 
     {
-        get;
-        protected set;
+        get => _ai;
+        set => _ai = value;
     }
-    public List<Func<bool>> ExitConditions
+    AI _ai;
+
+    CancellationToken token; //for cancelling a behaviour
+
+    public List<Condition> enterConditions
     {
         get;
-        protected set;
+        set;
+    }
+    public List<Condition> exitConditions
+    {
+        get;
+        set;
     }
 
-    public Behaviour(List<Func<bool>> enter, List<Func<bool>> exit)
+    protected Action behaviourAction; //what the behaviour actually does. Called only when behaviour is entered.
+
+    public Behaviour() { }
+
+    public Behaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action)
     {
-        EnterConditions = enter;
-        ExitConditions = exit;
+        this.ai = ai;
+        token = ai.source.Token;
+        enterConditions = enter;
+        exitConditions = exit;
+        behaviourAction = action;
     }
 
     public virtual void OnEnter() //Command to be called when behaviour is entered
     {
+        try
+        {
+            Task t = Task.Factory.StartNew(behaviourAction, token);
+        }
+        catch (AggregateException ae)
+        {
+            foreach (Exception e in ae.InnerExceptions)
+            {
+                if (e is TaskCanceledException)
+                {
+                    Console.WriteLine("Behaviour cancelled...", ((TaskCanceledException)e).Message);
+                }
+                else
+                {
+                    Console.WriteLine("Exception: " + e.GetType().Name);
+                }
+            }
+        }
     }
 
-    public virtual void OnExit() //Command to be called when behavior is exited
+    public virtual void OnExit() //Command to be called when behaviour is exited
     {
+        token.ThrowIfCancellationRequested(); //cancel current behaviour
     }
 
-    public virtual bool CheckConditions(List<Func<bool>> list)
+    public static bool CheckConditions(List<Condition> list, out Behaviour newState)
     {
         foreach (var con in list)
         {
-            if (con.Invoke())
+            if (con.newBehaviour is object)
             {
-                return true;
+                newState = con.newBehaviour;
             }
         }
+        newState = null;
         return false;
     }
 }

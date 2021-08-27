@@ -9,6 +9,4 @@ public interface IBehaviour
     public void OnEnter();
     public void OnExit();
 
-    //checking to change current behaviour
-    public bool CheckConditions(List<Func<bool>> conditions);
 }
