@@ -7,14 +7,12 @@ public class MouseAI : AI
 {
     Vector2 home;
 
-    Behaviour currentBehaviour;
-
     int hunger = 0;
     int energy = 100;
 
     private void Awake()
     {
-        behaviours = new List<Behaviour> //base class variable
+        behaviours = new List<AIBehaviour> //base class variable
         {
             new WanderBehaviour()
             {

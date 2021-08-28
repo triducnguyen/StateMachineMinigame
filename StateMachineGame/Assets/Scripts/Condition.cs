@@ -6,7 +6,7 @@ using UnityEngine;
 public class Condition
 {
     public Func<bool> check;
-    public Behaviour newBehaviour
+    public AIBehaviour newBehaviour
     {
         get
         {
@@ -16,6 +16,10 @@ public class Condition
             }
             return null;
         }
+        set
+        {
+            _newBehaviour = value;
+        }
     }
-    Behaviour _newBehaviour;
+    AIBehaviour _newBehaviour;
 }

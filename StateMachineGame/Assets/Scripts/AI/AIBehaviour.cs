@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class Behaviour : IBehaviour
+public abstract class AIBehaviour : IBehaviour
 {
     public AI ai 
     {
@@ -14,7 +14,13 @@ public abstract class Behaviour : IBehaviour
     }
     AI _ai;
 
-    CancellationToken token; //for cancelling a behaviour
+    //for cancelling a behaviour
+    public CancellationToken token
+    {
+        get => _token;
+        protected set => _token = value;
+    }
+    CancellationToken _token;
 
     public List<Condition> enterConditions
     {
@@ -29,9 +35,9 @@ public abstract class Behaviour : IBehaviour
 
     protected Action behaviourAction; //what the behaviour actually does. Called only when behaviour is entered.
 
-    public Behaviour() { }
+    public AIBehaviour() { }
 
-    public Behaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action)
+    public AIBehaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action)
     {
         this.ai = ai;
         token = ai.source.Token;
@@ -67,16 +73,17 @@ public abstract class Behaviour : IBehaviour
         token.ThrowIfCancellationRequested(); //cancel current behaviour
     }
 
-    public static bool CheckConditions(List<Condition> list, out Behaviour newState)
+    public static bool CheckConditions(List<Condition> list, out AIBehaviour newState)
     {
+        newState = null;
         foreach (var con in list)
         {
-            if (con.newBehaviour is object)
+            if (con.check.Invoke())
             {
                 newState = con.newBehaviour;
+                return true;
             }
         }
-        newState = null;
         return false;
     }
 }
