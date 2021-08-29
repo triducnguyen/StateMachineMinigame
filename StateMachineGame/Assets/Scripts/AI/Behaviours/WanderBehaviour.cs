@@ -8,41 +8,32 @@ using URandom = UnityEngine.Random;
 using Pathfinding;
 public class WanderBehaviour : AIBehaviour, IBehaviour
 {
+
     float maxDistance = 10;
 
     int pauseTime = 5;
 
-    public WanderBehaviour() { }
-    public WanderBehaviour(AI ai, Tuple<List<Condition>,List<Condition>> conditions, Action action ) : base(ai, conditions.Item1,conditions.Item2, action )
-    {}
+    public WanderBehaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action = null )
+    {
+        this.ai = ai;
+        enterConditions = enter;
+        exitConditions = exit;
+        behaviourAction = action is null ? () => Explore(maxDistance) : action;
+    }
 
     /// <summary>
     /// Method <c>Explore</c> generates a path 
     /// that does not exceed <paramref name="max"/> distance from <paramref name="origin"/>.
-    /// <paramref name="onPathComplete"/> will be executed every time a node in the path has completed.
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="max"></param>
-    /// <param name="onPathComplete"></param>
-    void Explore(Vector2 origin, float max, OnPathDelegate onPathComplete)
+    void Explore(float max)
     {
         //get direction
         var direction = URandom.insideUnitCircle * URandom.Range(0, max); //get a random point within circle
-        StartPath(origin, direction, max, onPathComplete);
-    }
-
-    void StartPath(Vector2 origin, Vector2 direction, float max, OnPathDelegate onPathComplete)
-    {
-
-        //A little bit confusing but I'll break it down
-
-        //this function starts a new path for the seeker to follow.
-        ai.seeker.StartPath(
-            origin,     //Where the AI currently is
-            direction,  //Where we want to go
-            //This is a function thats executed when the seeker completes a path
-            onPathComplete
-        );
+        ai.destination = direction;
+        ai.canSearch = true;
+        ai.SearchPath();
     }
 
     Vector2 GetPointInDirection(Vector2 origin, Vector2 direction, float maxNodeDistance)
@@ -106,28 +97,4 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
         var newPoint = normalizedPoint * UnityEngine.Random.Range(lowerBound, upperBound);
         return newPoint;
     }
-
-    void OnPathComplete(Path path)
-    {
-        Task.Factory.StartNew //creating a new task on a new thread
-                (
-                    () =>
-                    {
-                        Thread.Sleep(pauseTime * 1000);                         //wait
-                        Explore(ai.position2D, maxDistance, OnPathComplete);    //Explore again
-                    },
-                    token //token for cancelling behaviour
-                );
-    }
-
-    public override void OnEnter()
-    {
-        Explore(
-            ai.position2D,
-            maxDistance,
-            OnPathComplete
-            );
-                
-    }
-
 }

@@ -22,4 +22,10 @@ public class Condition
         }
     }
     AIBehaviour _newBehaviour;
+
+    public Condition(Func<bool> condition, AIBehaviour newBehaviour = null)
+    {
+        check = condition;
+        this.newBehaviour = newBehaviour;
+    }
 }

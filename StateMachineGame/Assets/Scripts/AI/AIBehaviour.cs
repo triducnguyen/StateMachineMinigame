@@ -14,14 +14,6 @@ public abstract class AIBehaviour : IBehaviour
     }
     AI _ai;
 
-    //for cancelling a behaviour
-    public CancellationToken token
-    {
-        get => _token;
-        protected set => _token = value;
-    }
-    CancellationToken _token;
-
     public List<Condition> enterConditions
     {
         get;
@@ -40,7 +32,6 @@ public abstract class AIBehaviour : IBehaviour
     public AIBehaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action)
     {
         this.ai = ai;
-        token = ai.source.Token;
         enterConditions = enter;
         exitConditions = exit;
         behaviourAction = action;
@@ -48,29 +39,13 @@ public abstract class AIBehaviour : IBehaviour
 
     public virtual void OnEnter() //Command to be called when behaviour is entered
     {
-        try
-        {
-            Task t = Task.Factory.StartNew(behaviourAction, token);
-        }
-        catch (AggregateException ae)
-        {
-            foreach (Exception e in ae.InnerExceptions)
-            {
-                if (e is TaskCanceledException)
-                {
-                    Console.WriteLine("Behaviour cancelled...", ((TaskCanceledException)e).Message);
-                }
-                else
-                {
-                    Console.WriteLine("Exception: " + e.GetType().Name);
-                }
-            }
-        }
+        ai.StartCoroutine(Behaviour());
     }
 
     public virtual void OnExit() //Command to be called when behaviour is exited
     {
-        token.ThrowIfCancellationRequested(); //cancel current behaviour
+        ai.StopCoroutine(Behaviour()); //cancel current behaviour
+        ai.StopCoroutine(DelayedBehaviour());
     }
 
     public static bool CheckConditions(List<Condition> list, out AIBehaviour newState)
@@ -85,5 +60,24 @@ public abstract class AIBehaviour : IBehaviour
             }
         }
         return false;
+    }
+
+    public virtual void OnTargetReached()
+    {
+        //start the behaviour again
+        ai.canSearch = false;
+        ai.StartCoroutine(DelayedBehaviour());
+    }
+
+    public IEnumerator DelayedBehaviour()
+    {
+        yield return new WaitForSeconds(2);
+        behaviourAction.Invoke();
+    }
+
+    public IEnumerator Behaviour()
+    {
+        behaviourAction.Invoke();
+        yield return null;
     }
 }

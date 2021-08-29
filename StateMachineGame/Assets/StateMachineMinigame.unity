@@ -288,7 +288,6 @@ GameObject:
   - component: {fileID: 696721383}
   - component: {fileID: 696721386}
   - component: {fileID: 696721385}
-  - component: {fileID: 696721387}
   m_Layer: 0
   m_Name: Mouse
   m_TagString: Untagged
@@ -319,14 +318,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696721382}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1.691, y: 1.519, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 805870057}
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &696721385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -336,12 +335,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 696721382}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
+  m_Script: {fileID: 11500000, guid: c20c56b9e54cf67479a944bfa44795ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   version: 2
   radius: 0.16
-  height: 2
+  height: 0.02
   repathRate: 0.5
   canSearch: 1
   canMove: 1
@@ -351,7 +350,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   centerOffsetCompatibility: NaN
-  orientation: 0
+  orientation: 1
   enableRotation: 1
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
@@ -390,21 +389,7 @@ MonoBehaviour:
   traversableTags: -1
   tagPenalties: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   graphMask:
-    value: 1
---- !u!114 &696721387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 696721382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c20c56b9e54cf67479a944bfa44795ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  seeker: {fileID: 696721386}
-  aiTransform: {fileID: 696721384}
+    value: -1
 --- !u!1 &805870056
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,13 +415,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805870056}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 696721384}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!114 &805870058
 MonoBehaviour:
   m_ObjectHideFlags: 0

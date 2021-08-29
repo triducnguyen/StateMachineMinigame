@@ -4,17 +4,12 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class AI : MonoBehaviour
+public class AI : AIPath, IAstarAI
 {
-    public Seeker seeker;
-
     public Vector2 position2D
     {
-        get => new Vector2(aiTransform.position.x, aiTransform.position.y);
+        get => new Vector2(transform.position.x, transform.position.y);
     }
-    public Transform aiTransform;
-
-    public CancellationTokenSource source = new CancellationTokenSource(); //What allows us to cancel a behaviour 
 
     public AIBehaviour currentBehaviour
     {
@@ -30,17 +25,23 @@ public class AI : MonoBehaviour
     } //Current behaviour tells ai how to act
     AIBehaviour _currentBehaviour;
 
-    protected List<AIBehaviour> behaviours; //list of possible behaviours
+    protected List<AIBehaviour> behaviours = new List<AIBehaviour>(); //list of possible behaviours
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();   
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         AIBehaviour next;
         //check enter conditions on all states
         foreach (var beh in behaviours)
@@ -66,5 +67,15 @@ public class AI : MonoBehaviour
             }
         }
         
+    }
+
+    public override void OnTargetReached()
+    {
+        //check if first time getting to target
+
+        if (currentBehaviour is object)
+        {
+            currentBehaviour.OnTargetReached();
+        }
     }
 }

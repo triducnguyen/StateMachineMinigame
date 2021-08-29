@@ -10,39 +10,36 @@ public class MouseAI : AI
     int hunger = 0;
     int energy = 100;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         behaviours = new List<AIBehaviour> //base class variable
         {
-            new WanderBehaviour()
-            {
-                ai = this,
-                enterConditions = new List<Condition>()
+            new WanderBehaviour(
+                this,
+                new List<Condition>()
                 {
-                    //hunger is below 60 & energy is > 50
-                    new Condition()
-                    {
-                        check = () => hunger < 60 && energy > 50
-                    }
+                    new Condition(() => hunger <= 50 && energy >= 45)
                 },
-                exitConditions = new List<Condition>() 
+                new List<Condition>()
                 {
-
-                },
-            },
+                    new Condition(() => hunger < 50 || energy < 45)
+                }
+            ),
             
         };
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         //check if mouse doesn't have a home
             //make a home
     }
 
     // Update is called once per frame
-    public override void Update()
+    protected override void Update()
     {
         base.Update();
     }
