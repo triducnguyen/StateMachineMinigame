@@ -25,6 +25,8 @@ public abstract class AIBehaviour : IBehaviour
         set;
     }
 
+    List<Coroutine> coroutines = new List<Coroutine>();
+
     protected Action behaviourAction; //what the behaviour actually does. Called only when behaviour is entered.
 
     public AIBehaviour() { }
@@ -39,13 +41,16 @@ public abstract class AIBehaviour : IBehaviour
 
     public virtual void OnEnter() //Command to be called when behaviour is entered
     {
-        ai.StartCoroutine(Behaviour());
+        coroutines.Add(ai.StartCoroutine(Behaviour()));
     }
 
     public virtual void OnExit() //Command to be called when behaviour is exited
     {
         ai.StopCoroutine(Behaviour()); //cancel current behaviour
-        ai.StopCoroutine(DelayedBehaviour());
+        foreach (var routine in coroutines)
+        {
+            ai.StopCoroutine(routine);
+        }
     }
 
     public static bool CheckConditions(List<Condition> list, out AIBehaviour newState)
@@ -64,14 +69,12 @@ public abstract class AIBehaviour : IBehaviour
 
     public virtual void OnTargetReached()
     {
-        //start the behaviour again
-        ai.canSearch = false;
-        ai.StartCoroutine(DelayedBehaviour());
+        
     }
 
-    public IEnumerator DelayedBehaviour()
+    public IEnumerator DelayedBehaviour(float seconds)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(seconds);
         behaviourAction.Invoke();
     }
 

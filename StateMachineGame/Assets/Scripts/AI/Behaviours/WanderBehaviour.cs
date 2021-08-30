@@ -97,4 +97,11 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
         var newPoint = normalizedPoint * UnityEngine.Random.Range(lowerBound, upperBound);
         return newPoint;
     }
+
+    public override void OnTargetReached()
+    {
+        //start the behaviour again
+        ai.canSearch = false;
+        ai.StartCoroutine(DelayedBehaviour(pauseTime));
+    }
 }

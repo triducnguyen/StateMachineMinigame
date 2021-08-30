@@ -15,15 +15,15 @@ public class MouseAI : AI
         base.Awake();
         behaviours = new List<AIBehaviour> //base class variable
         {
-            new WanderBehaviour(
-                this,
-                new List<Condition>()
+            new WanderBehaviour(        //Wander/Exploring behaviour
+                this,                   //pass reference of ai to behaviour
+                new List<Condition>()   //Enter conditions of behaviour
                 {
-                    new Condition(() => hunger <= 50 && energy >= 45)
+                    new Condition(() => hunger <= 50 && energy >= 45) 
                 },
-                new List<Condition>()
+                new List<Condition>()   //Exit conditions of behaviour
                 {
-                    new Condition(() => hunger < 50 || energy < 45)
+                    //new Condition(() => hunger > 50 && energy < 45, )
                 }
             ),
             
