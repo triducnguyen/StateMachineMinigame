@@ -24,7 +24,10 @@ public class MouseAI : AI
                 new List<Condition>()   //Exit conditions of behaviour
                 {
                     //new Condition(() => hunger > 50 && energy < 45, )
-                }
+                },
+                3,
+                4f,
+                null
             ),
             
         };

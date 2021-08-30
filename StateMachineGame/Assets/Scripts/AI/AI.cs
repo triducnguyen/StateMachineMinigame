@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
+[System.Serializable]
 public class AI : AIPath, IAstarAI
 {
     public Vector2 position2D

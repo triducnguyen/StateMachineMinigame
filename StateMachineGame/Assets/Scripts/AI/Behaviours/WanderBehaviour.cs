@@ -9,16 +9,18 @@ using Pathfinding;
 public class WanderBehaviour : AIBehaviour, IBehaviour
 {
 
-    float maxDistance = 10;
+    public float maxDistance = 10;
 
-    int pauseTime = 5;
+    public int pauseTime = 5;
 
-    public WanderBehaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action = null )
+    public WanderBehaviour(AI ai, List<Condition> enter, List<Condition> exit, int pauseTime, float maxDist, Action action = null)
     {
         this.ai = ai;
         enterConditions = enter;
         exitConditions = exit;
         behaviourAction = action is null ? () => Explore(maxDistance) : action;
+        this.pauseTime = pauseTime;
+        maxDistance = maxDist;
     }
 
     /// <summary>
