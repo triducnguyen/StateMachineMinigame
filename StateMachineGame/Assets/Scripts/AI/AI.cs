@@ -4,43 +4,53 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-public class AI : MonoBehaviour
+[System.Serializable]
+public class AI : AIPath, IAstarAI
 {
-    public Seeker seeker //moves the ai around
+    Vector2 position2D
     {
-        get => _seeker;
-        protected set => _seeker = value;
-    } 
-    Seeker _seeker;
+        get => transform.position;
+    }
 
-    public CancellationTokenSource source = new CancellationTokenSource(); //What allows us to cancel a behaviour 
-
-    public Behaviour currentBehaviour
+    public AIBehaviour currentBehaviour
     {
         get { return _currentBehaviour; }
-        protected set { _currentBehaviour.OnExit(); _currentBehaviour = value; } //exits the current behaviour before it is changed
+        protected set 
+        {
+            if (currentBehaviour is object)
+            {
+                _currentBehaviour.OnExit();
+            }
+             _currentBehaviour = value;
+        } //exits the current behaviour before it is changed
     } //Current behaviour tells ai how to act
-    Behaviour _currentBehaviour;
+    AIBehaviour _currentBehaviour;
 
-    protected List<Behaviour> behaviours; //list of possible behaviours
+    protected List<AIBehaviour> behaviours = new List<AIBehaviour>(); //list of possible behaviours
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        
+        base.Start();   
     }
 
     // Update is called once per frame
-    public virtual void Update()
+    protected override void Update()
     {
-        Behaviour next;
+        base.Update();
+        AIBehaviour next;
         //check enter conditions on all states
         foreach (var beh in behaviours)
         {
-            if (Behaviour.CheckConditions(beh.enterConditions, out next))
+            if (beh != currentBehaviour && AIBehaviour.CheckConditions(beh.enterConditions, out next))
             {
                 //found a state to enter, set it as current state
-                currentBehaviour = next;
+                currentBehaviour = beh;
                 //enter the new state
                 currentBehaviour.OnEnter();
                 return; //dont allow a state to check conditions until next update
@@ -48,12 +58,25 @@ public class AI : MonoBehaviour
         }
 
         //check exit conditions for current state
-        
-        if (Behaviour.CheckConditions(currentBehaviour.exitConditions, out next))
+        if (currentBehaviour is object)
         {
-            //swap to new state
-            currentBehaviour = next;
-            currentBehaviour.OnEnter();
+            if (AIBehaviour.CheckConditions(currentBehaviour.exitConditions, out next))
+            {
+                //swap to new state
+                currentBehaviour = next;
+                currentBehaviour.OnEnter();
+            }
+        }
+        
+    }
+
+    public override void OnTargetReached()
+    {
+        //check if first time getting to target
+
+        if (currentBehaviour is object)
+        {
+            currentBehaviour.OnTargetReached();
         }
     }
 }

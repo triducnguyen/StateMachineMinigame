@@ -4,41 +4,64 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using URandom = UnityEngine.Random;
 using Pathfinding;
-public class WanderBehaviour : Behaviour, IBehaviour
+public class WanderBehaviour : AIBehaviour, IBehaviour
 {
-    public WanderBehaviour() { }
-    public WanderBehaviour(AI ai, Tuple<List<Condition>,List<Condition>> conditions, Action action ) : base(ai, conditions.Item1,conditions.Item2, action )
-    {}
+
+    public float maxDistance = 10;
+
+    public int pauseTime = 5;
+
+    public WanderBehaviour(AI ai, List<Condition> enter, List<Condition> exit, int pauseTime, float maxDist, Action action = null)
+    {
+        this.ai = ai;
+        enterConditions = enter;
+        exitConditions = exit;
+        behaviourAction = action is null ? () => Explore(maxDistance) : action;
+        this.pauseTime = pauseTime;
+        maxDistance = maxDist;
+    }
 
     /// <summary>
-    /// Method <c>Explore</c> generates a path of length <paramref name="pathLength"/>
+    /// Method <c>Explore</c> generates a path 
     /// that does not exceed <paramref name="max"/> distance from <paramref name="origin"/>.
-    /// The max distance between nodes on a path is determined by <paramref name="maxNodeDistance"/>.
-    /// <paramref name="onNodeComplete"/> will be executed every time a node in the path has completed.
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="max"></param>
-    /// <param name="pathLength"></param>
-    /// <param name="maxNodeDistance"></param>
-    /// <param name="onNodeComplete"></param>
-    async void Explore(Vector2 origin, float max, int pathLength, float maxNodeDistance, Action onNodeComplete)
+    void Explore(float max)
     {
-        if (pathLength < 1)
-        {
-            Console.WriteLine("Invalid path length.");
-            return;
-        }
-        //generate path length
-        var length = UnityEngine.Random.Range(0.1f, pathLength);
-        
-        
-
-
+        //get direction
+        var direction = URandom.insideUnitCircle * URandom.Range(0, max); //get a random point within circle
+        ai.destination = direction;
+        ai.canSearch = true;
+        ai.SearchPath();
     }
 
+    Vector2 GetPointInDirection(Vector2 origin, Vector2 direction, float maxNodeDistance)
+    {
+        
+        //generate distance of new point
+        var dist = URandom.Range(0.2f, maxNodeDistance);
+        //get angle from direction
+        var angle = Vector2.Angle(Vector2.zero, direction);
+        //create some variance to the angle
+        var variance = URandom.Range(angle - 20, angle + 20);
+        //convert angle back to normalized vector
+        var newDirection = DegreeToVector2(variance);
+        //return scaled vector
+        return newDirection * dist;
+    }
 
+    public Vector2 RadianToVector2(float radian)
+    {
+        return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
+    }
 
+    public Vector2 DegreeToVector2(float degree)
+    {
+        return RadianToVector2(degree * Mathf.Deg2Rad);
+    }
 
     /// <summary>
     ///  Method <c>GetRandomPos</c> gets a random point within a circle with its middle at <paramref name="center"/> and a radius of <paramref name="r"/>.
@@ -77,5 +100,10 @@ public class WanderBehaviour : Behaviour, IBehaviour
         return newPoint;
     }
 
-
+    public override void OnTargetReached()
+    {
+        //start the behaviour again
+        ai.canSearch = false;
+        ai.StartCoroutine(DelayedBehaviour(pauseTime));
+    }
 }
