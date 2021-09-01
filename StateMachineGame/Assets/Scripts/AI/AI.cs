@@ -7,9 +7,9 @@ using UnityEngine;
 [System.Serializable]
 public class AI : AIPath, IAstarAI
 {
-    public Vector2 position2D
+    Vector2 position2D
     {
-        get => new Vector2(transform.position.x, transform.position.y);
+        get => transform.position;
     }
 
     public AIBehaviour currentBehaviour
