@@ -7,10 +7,13 @@ using UnityEngine;
 [System.Serializable]
 public class AI : AIPath, IAstarAI
 {
+    //position
     Vector2 position2D
     {
         get => transform.position;
     }
+
+    //behaviour
 
     public AIBehaviour currentBehaviour
     {
@@ -27,6 +30,9 @@ public class AI : AIPath, IAstarAI
     AIBehaviour _currentBehaviour;
 
     protected List<AIBehaviour> behaviours = new List<AIBehaviour>(); //list of possible behaviours
+
+    //AI Agro Collider
+    public CircleCollider2D agro;
 
     protected override void Awake()
     {
