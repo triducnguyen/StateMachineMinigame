@@ -13,10 +13,10 @@ public class MouseAI : AI
     protected override void Awake()
     {
         base.Awake();
-        behaviours = new List<AIBehaviour> //base class variable
+        behaviours = new List<AIBehaviour>
         {
             new WanderBehaviour(        //Wander/Exploring behaviour
-                this,                   //pass reference of ai to behaviour
+                aStar,                   //pass reference of pathfinder to behaviour
                 new List<Condition>()   //Enter conditions of behaviour
                 {
                     new Condition(() => hunger <= 50 && energy >= 45) 
@@ -25,9 +25,9 @@ public class MouseAI : AI
                 {
                     //new Condition(() => hunger > 50 && energy < 45, )
                 },
-                3,
-                4f,
-                null
+                3, //pause time
+                4f,//max distance from location
+                null //use default action (explore)
             ),
             
         };

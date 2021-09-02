@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
-[System.Serializable]
-public class AI : AIPath, IAstarAI
+[RequireComponent(typeof(PathFinder))]
+public class AI : MonoBehaviour
 {
+    //position
     Vector2 position2D
     {
         get => transform.position;
     }
+
+    //behaviour
 
     public AIBehaviour currentBehaviour
     {
@@ -28,21 +31,30 @@ public class AI : AIPath, IAstarAI
 
     protected List<AIBehaviour> behaviours = new List<AIBehaviour>(); //list of possible behaviours
 
-    protected override void Awake()
+    //a*
+    public PathFinder aStar;
+
+    //AI Agro Collider
+    public CircleCollider2D agro;
+
+    protected virtual void Awake()
     {
-        base.Awake();
+        if (aStar is null)
+        {
+            aStar = GetComponent<PathFinder>();
+        }
+        aStar.DestinationReached += OnTargetReached;
     }
 
     // Start is called before the first frame update
-    protected override void Start()
+    protected virtual void Start()
     {
-        base.Start();   
+         
     }
 
     // Update is called once per frame
-    protected override void Update()
+    protected virtual void Update()
     {
-        base.Update();
         AIBehaviour next;
         //check enter conditions on all states
         foreach (var beh in behaviours)
@@ -70,7 +82,7 @@ public class AI : AIPath, IAstarAI
         
     }
 
-    public override void OnTargetReached()
+    public void OnTargetReached()
     {
         //check if first time getting to target
 

@@ -7,7 +7,10 @@ public class HungryBehaviour : AIBehaviour
 {
     //find food!
 
-    public HungryBehaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action) : base(ai, enter, exit, action)
+    List<Growable> edibles = new List<Growable>();
+    
+    public HungryBehaviour(PathFinder aStar, List<Condition> enter, List<Condition> exit, Action action)
+        : base(aStar, enter, exit, action)
     {
         
     }

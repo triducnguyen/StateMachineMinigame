@@ -87,7 +87,7 @@ namespace Pathfinding {
 			foreach (var target in targets) if (target != null) (target as IVersionedMonoBehaviourInternal).UpgradeFromUnityThread();
 		}
 
-		public sealed override void OnInspectorGUI () {
+		public override void OnInspectorGUI () {
 			EditorGUI.indentLevel = 0;
 			serializedObject.Update();
 			try {
