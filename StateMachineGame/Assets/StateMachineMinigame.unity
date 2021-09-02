@@ -286,6 +286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 696721384}
   - component: {fileID: 696721383}
+  - component: {fileID: 696721387}
   - component: {fileID: 696721386}
   - component: {fileID: 696721385}
   m_Layer: 0
@@ -338,9 +339,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c20c56b9e54cf67479a944bfa44795ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aStar: {fileID: 696721386}
+--- !u!114 &696721386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 696721382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b51805609063c044a43b718cb247230, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   version: 2
-  radius: 0.16
-  height: 0.02
+  radius: 0.5
+  height: 2
   repathRate: 0.5
   canSearch: 1
   canMove: 1
@@ -362,7 +376,7 @@ MonoBehaviour:
   slowWhenNotFacingTarget: 1
   whenCloseToDestination: 0
   constrainInsideGraph: 0
---- !u!114 &696721386
+--- !u!114 &696721387
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

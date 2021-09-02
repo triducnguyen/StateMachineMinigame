@@ -13,9 +13,9 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
 
     public int pauseTime = 5;
 
-    public WanderBehaviour(AI ai, List<Condition> enter, List<Condition> exit, int pauseTime, float maxDist, Action action = null)
+    public WanderBehaviour(PathFinder pathFinder, List<Condition> enter, List<Condition> exit, int pauseTime, float maxDist, Action action = null)
     {
-        this.ai = ai;
+        aStar = pathFinder;
         enterConditions = enter;
         exitConditions = exit;
         behaviourAction = action is null ? () => Explore(maxDistance) : action;
@@ -33,9 +33,9 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
     {
         //get direction
         var direction = URandom.insideUnitCircle * URandom.Range(0, max); //get a random point within circle
-        ai.destination = direction;
-        ai.canSearch = true;
-        ai.SearchPath();
+        aStar.destination = direction;
+        aStar.canSearch = true;
+        aStar.SearchPath();
     }
 
     Vector2 GetPointInDirection(Vector2 origin, Vector2 direction, float maxNodeDistance)
@@ -103,7 +103,7 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
     public override void OnTargetReached()
     {
         //start the behaviour again
-        ai.canSearch = false;
-        ai.StartCoroutine(DelayedBehaviour(pauseTime));
+        aStar.canSearch = false;
+        aStar.StartCoroutine(DelayedBehaviour(pauseTime));
     }
 }

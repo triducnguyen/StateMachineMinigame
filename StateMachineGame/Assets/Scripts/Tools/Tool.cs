@@ -10,18 +10,26 @@ public class Tool : MonoBehaviour
     {
         get
         {
-
+            return _level;
         }
-        set
+        protected set
         {
-
+            _level = value;
         }
     }
     int _level = 1;
     public float experience
     {
-
+        get
+        {
+            return _experience;
+        }
+        protected set
+        {
+            _experience = value;
+        }
     }
+    float _experience = 0;
 
 
     //tool area of effect

@@ -7,12 +7,12 @@ using UnityEngine;
 
 public abstract class AIBehaviour : IBehaviour
 {
-    public AI ai 
+    public PathFinder aStar 
     {
-        get => _ai;
-        set => _ai = value;
+        get => _aStar;
+        set => _aStar = value;
     }
-    AI _ai;
+    PathFinder _aStar;
 
     public List<Condition> enterConditions
     {
@@ -31,9 +31,9 @@ public abstract class AIBehaviour : IBehaviour
 
     public AIBehaviour() { }
 
-    public AIBehaviour(AI ai, List<Condition> enter, List<Condition> exit, Action action)
+    public AIBehaviour(PathFinder pathFinder, List<Condition> enter, List<Condition> exit, Action action)
     {
-        this.ai = ai;
+        aStar = pathFinder;
         enterConditions = enter;
         exitConditions = exit;
         behaviourAction = action;
@@ -41,15 +41,15 @@ public abstract class AIBehaviour : IBehaviour
 
     public virtual void OnEnter() //Command to be called when behaviour is entered
     {
-        coroutines.Add(ai.StartCoroutine(Behaviour()));
+        coroutines.Add(aStar.StartCoroutine(Behaviour()));
     }
 
     public virtual void OnExit() //Command to be called when behaviour is exited
     {
-        ai.StopCoroutine(Behaviour()); //cancel current behaviour
+        aStar.StopCoroutine(Behaviour()); //cancel current behaviour
         foreach (var routine in coroutines)
         {
-            ai.StopCoroutine(routine);
+            aStar.StopCoroutine(routine);
         }
     }
 
