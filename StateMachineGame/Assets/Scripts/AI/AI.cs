@@ -7,10 +7,13 @@ using UnityEngine;
 [RequireComponent(typeof(PathFinder))]
 public class AI : MonoBehaviour
 {
+    //position
     Vector2 position2D
     {
         get => transform.position;
     }
+
+    //behaviour
 
     public AIBehaviour currentBehaviour
     {
@@ -31,6 +34,9 @@ public class AI : MonoBehaviour
     //a*
     [SerializeField]
     protected PathFinder aStar;
+
+    //AI Agro Collider
+    public CircleCollider2D agro;
 
     protected virtual void Awake()
     {

@@ -18,6 +18,7 @@ public class Tool : MonoBehaviour
         }
     }
     int _level = 1;
+
     public float experience
     {
         get
