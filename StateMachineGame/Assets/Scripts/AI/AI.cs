@@ -32,8 +32,7 @@ public class AI : MonoBehaviour
     protected List<AIBehaviour> behaviours = new List<AIBehaviour>(); //list of possible behaviours
 
     //a*
-    [SerializeField]
-    protected PathFinder aStar;
+    public PathFinder aStar;
 
     //AI Agro Collider
     public CircleCollider2D agro;
