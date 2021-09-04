@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 using UnityEngine;
 using URandom = UnityEngine.Random;
 using Pathfinding;
+
+[System.Serializable]
 public class WanderBehaviour : AIBehaviour, IBehaviour
 {
-
+    
     public float maxDistance = 10;
 
     public int pauseTime = 5;
 
-    public WanderBehaviour(PathFinder pathFinder, List<Condition> enter, List<Condition> exit, int pauseTime, float maxDist, Action action = null)
+    public WanderBehaviour(AI ai, int pauseTime, float maxDist, Action action = null)
     {
-        aStar = pathFinder;
-        enterConditions = enter;
-        exitConditions = exit;
+        name = "Wander";
+        this.ai = ai;
         behaviourAction = action is null ? () => Explore(maxDistance) : action;
         this.pauseTime = pauseTime;
         maxDistance = maxDist;
@@ -33,34 +34,11 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
     {
         //get direction
         var direction = URandom.insideUnitCircle * URandom.Range(0, max); //get a random point within circle
-        aStar.destination = direction;
+        target = direction;
+        aStar.destination = target;
         aStar.canSearch = true;
         aStar.SearchPath();
-    }
-
-    Vector2 GetPointInDirection(Vector2 origin, Vector2 direction, float maxNodeDistance)
-    {
-        
-        //generate distance of new point
-        var dist = URandom.Range(0.2f, maxNodeDistance);
-        //get angle from direction
-        var angle = Vector2.Angle(Vector2.zero, direction);
-        //create some variance to the angle
-        var variance = URandom.Range(angle - 20, angle + 20);
-        //convert angle back to normalized vector
-        var newDirection = DegreeToVector2(variance);
-        //return scaled vector
-        return newDirection * dist;
-    }
-
-    public Vector2 RadianToVector2(float radian)
-    {
-        return new Vector2(Mathf.Cos(radian), Mathf.Sin(radian));
-    }
-
-    public Vector2 DegreeToVector2(float degree)
-    {
-        return RadianToVector2(degree * Mathf.Deg2Rad);
+        aStar.DestinationReached += OnTargetReached;
     }
 
     /// <summary>
@@ -102,8 +80,19 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
 
     public override void OnTargetReached()
     {
-        //start the behaviour again
-        aStar.canSearch = false;
-        aStar.StartCoroutine(DelayedBehaviour(pauseTime));
+        //check if it was the destination we wanted
+        if ((Vector2)(aStar.destination) == target)
+        {
+            //start the behaviour again
+            aStar.DestinationReached -= OnTargetReached;
+            aStar.canSearch = false;
+            StartCoroutine(DelayedBehaviour(pauseTime));
+        }
+    }
+
+    public override void OnExit()
+    {
+        aStar.DestinationReached -= OnTargetReached;
+        base.OnExit();
     }
 }
