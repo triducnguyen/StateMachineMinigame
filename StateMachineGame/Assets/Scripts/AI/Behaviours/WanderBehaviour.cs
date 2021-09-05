@@ -84,7 +84,6 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
         if ((Vector2)(aStar.destination) == target)
         {
             //start the behaviour again
-            aStar.DestinationReached -= OnTargetReached;
             aStar.canSearch = false;
             StartCoroutine(DelayedBehaviour(pauseTime));
         }

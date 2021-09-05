@@ -1,6 +1,12 @@
+var baseLayerDD;
+var ruleLayerDD;
 
+var baseLayer;
+var ruleLayer;
 
-var okEnabled = false;
+var okBtn;
+var cancelBtn;
+
 
 //first fuction called
 function main()
@@ -11,40 +17,54 @@ function main()
     //var txt = window.add("edittext");
     
     //controls
+    baseLayerDD = window.add("dropdownlist");
 
+    ruleLayerDD = window.add("dropdownlist");
+
+    okBtn = windowControls.add("button", undefined ,"OK");
+
+    cancelBtn = windowControls.add("button", undefined, "Cancel");
     //Base layer dropdown
-    var baseLayer = window.add("dropdownlist");
-    baseLayer.title = "Base Layer";
+    
+    baseLayerDD.title = "Base Layer";
     var artLayers = FilterLayers(GetLayers());
     //txt.text = text;
-    LoadDropDownItems(baseLayer, artLayers);
+    LoadDropDownItems(baseLayerDD, artLayers);
+    baseLayerDD.onChange = OnBaseDropDownChange();
 
     //Rule LayerSet
-    var ruleLayer = window.add("dropdownlist");
-    ruleLayer.title = "Rule Group";
+    
+    ruleLayerDD.title = "Rule Group";
     var setLayers = FilterLayers(GetLayers(undefined, false), false);
-    LoadDropDownItems(ruleLayer, setLayers);
+    LoadDropDownItems(ruleLayerDD, setLayers);
+    ruleLayersDD.onChange = OnRuleDropDownChange();
     var windowControls = window.add("panel")
-    windowControls.
-    var ok = window.add("button", undefined ,"OK");
-    ok.enabled = okEnabled;
-    ok.onClick = okClicked;
-    var cancel = window.add("button", undefined, "Cancel")
+    
+    
+    okBtn.enabled = false;
+    okBtn.onClick = okClicked;
 
-   
-
+    
     window.show();
 }
 
 
 function OnBaseDropDownChange()
 {
-
+    baseLayer = baseLayerDD.selection;
+    UpdateOK();
 }
 
 function OnRuleDropDownChange()
 {
+    ruleLayer = ruleLayerDD.selection;
+    UpdateOK();
+}
 
+function UpdateOK()
+{
+    var enabled = typeof baseLayer !== 'undefined' && typeof ruleLayer !== 'undefined';
+    okBtn.enabled = enabled;
 }
 
 function LoadDropDownItems(dropdown, items)

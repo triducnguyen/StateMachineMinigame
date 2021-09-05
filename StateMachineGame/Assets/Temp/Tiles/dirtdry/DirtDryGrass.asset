@@ -162,4 +162,4 @@ MonoBehaviour:
     m_Neighbors: 
     m_NeighborPositions: []
     m_RuleTransform: 0
-  type: DirtDry
+  type: Dirt

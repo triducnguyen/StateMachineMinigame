@@ -11,7 +11,7 @@ public class YRenderLevel : MonoBehaviour
         {
             if (target is object && spriteRenderer is object) //check that target & renderer are not null
             {
-                return Mathf.RoundToInt(target.position.y - 100f) ;
+                return Mathf.RoundToInt((target.position.y*-100)) ;
             }
             else//target is null, send to back
             {

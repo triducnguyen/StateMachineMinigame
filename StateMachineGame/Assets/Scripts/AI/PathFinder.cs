@@ -11,7 +11,11 @@ public class PathFinder : AIPath
     public override void OnTargetReached()
     {
         base.OnTargetReached();
-        DestinationReached();
+        if (DestinationReached is object)
+        {
+            DestinationReached();
+        }
+        
     }
 
 }
