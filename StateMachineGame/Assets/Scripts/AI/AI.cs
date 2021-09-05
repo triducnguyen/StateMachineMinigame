@@ -1,35 +1,54 @@
 using Pathfinding;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 
 [RequireComponent(typeof(PathFinder))]
+[System.Serializable]
 public class AI : MonoBehaviour
 {
+
+    //stats
+    public float energy = 100;
+    public float health = 100;
+    public float hunger = 0;
+
     //position
-    Vector2 position2D
+    public Vector2 position2D
     {
         get => transform.position;
     }
 
     //behaviour
 
-    public AIBehaviour currentBehaviour
+    //List<string> currentBehNames
+    //{
+    //    get => _currentBehNames;
+    //    set
+    //    {
+    //        _currentBehNames = value;
+    //        activeBehaviours = _currentBehNames.ToArray();
+    //    }
+    //}
+    //List<string> _currentBehNames = new List<string>();
+    public List<AIBehaviour> activeBehaviours
     {
-        get { return _currentBehaviour; }
+        get { return _activeBehaviours; }
         protected set 
         {
-            if (currentBehaviour is object)
+            if (activeBehaviours is object)
             {
-                _currentBehaviour.OnExit();
+                ExitBehaviours();
             }
-             _currentBehaviour = value;
+             _activeBehaviours = value;
         } //exits the current behaviour before it is changed
-    } //Current behaviour tells ai how to act
-    AIBehaviour _currentBehaviour;
+    } //Current behaviours tells ai how to act
 
-    protected List<AIBehaviour> behaviours = new List<AIBehaviour>(); //list of possible behaviours
+    public List<AIBehaviour> _activeBehaviours = new List<AIBehaviour>();
+
+    public List<AIBehaviour> behaviours = new List<AIBehaviour>(); //list of possible behaviours
 
     //a*
     public PathFinder aStar;
@@ -37,13 +56,14 @@ public class AI : MonoBehaviour
     //AI Agro Collider
     public CircleCollider2D agro;
 
+
+
     protected virtual void Awake()
     {
         if (aStar is null)
         {
             aStar = GetComponent<PathFinder>();
         }
-        aStar.DestinationReached += OnTargetReached;
     }
 
     // Start is called before the first frame update
@@ -57,38 +77,49 @@ public class AI : MonoBehaviour
     {
         AIBehaviour next;
         //check enter conditions on all states
-        foreach (var beh in behaviours)
+        foreach (var behaviour in behaviours)
         {
-            if (beh != currentBehaviour && AIBehaviour.CheckConditions(beh.enterConditions, out next))
+            if (!activeBehaviours.Contains(behaviour) && behaviour.CheckConditions(behaviour.enterConditions, out next))
             {
-                //found a state to enter, set it as current state
-                currentBehaviour = beh;
-                //enter the new state
-                currentBehaviour.OnEnter();
-                return; //dont allow a state to check conditions until next update
+                //found a state to enter, add it to active behaviours
+                EnterBehaviour(behaviour);
             }
         }
 
-        //check exit conditions for current state
-        if (currentBehaviour is object)
+        //check exit conditions for active states
+        for (int i = activeBehaviours.Count-1; i>=0; i--)
         {
-            if (AIBehaviour.CheckConditions(currentBehaviour.exitConditions, out next))
+            var behaviour = activeBehaviours[i];
+            if (behaviour.CheckConditions(behaviour.exitConditions, out next) && !activeBehaviours.Contains(next))
             {
-                //swap to new state
-                currentBehaviour = next;
-                currentBehaviour.OnEnter();
+                ExitBehaviour(behaviour);
+                EnterBehaviour(next);
             }
         }
         
     }
 
-    public void OnTargetReached()
+    public void EnterBehaviour(AIBehaviour behaviour)
     {
-        //check if first time getting to target
+        //add behaviour to active behaviours
+        activeBehaviours.Add(behaviour);
+        //activate the behaviour
+        behaviour.OnEnter();
+    }
 
-        if (currentBehaviour is object)
+    public void ExitBehaviour(AIBehaviour behaviour)
+    {
+        behaviour.OnExit();
+        activeBehaviours.RemoveAt(activeBehaviours.IndexOf(behaviour));
+    }
+
+    public void ExitBehaviours()
+    {
+        for ( int i=activeBehaviours.Count; i>=0; i--)
         {
-            currentBehaviour.OnTargetReached();
+            var behaviour = activeBehaviours[i];
+            behaviour.OnExit();
+            activeBehaviours.RemoveAt(i);
         }
     }
 }

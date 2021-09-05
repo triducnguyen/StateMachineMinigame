@@ -5,68 +5,106 @@ using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public abstract class AIBehaviour : IBehaviour
+[System.Serializable]
+public class AIBehaviour : IBehaviour
 {
+    //weight will determine how important this behaviour is.
+    //When multiple behaviours are active, higher weights are prioritized
+    float weight = 0;
+
+    public string name = "Default";
+    public AI ai
+    {
+        get => _ai;
+        set {
+            _ai = value;
+            aStar = value.aStar;
+        }
+    }
+    [SerializeField]
+    AI _ai;
+
     public PathFinder aStar 
     {
         get => _aStar;
         set => _aStar = value;
     }
+    [SerializeField]
     PathFinder _aStar;
 
-    public List<Condition> enterConditions
+    //location that his behaviour wants to go to
+    public Vector2 target
     {
-        get;
-        set;
+        get => _target;
+        protected set => _target = value;
     }
-    public List<Condition> exitConditions
-    {
-        get;
-        set;
-    }
+    [SerializeField]
+    Vector2 _target;
 
-    List<Coroutine> coroutines = new List<Coroutine>();
+    public List<Condition> enterConditions = new List<Condition>();
+    public List<Condition> exitConditions = new List<Condition>();
 
+    public List<Coroutine> coroutines = new List<Coroutine>();
+    
+    [SerializeField]
     protected Action behaviourAction; //what the behaviour actually does. Called only when behaviour is entered.
 
     public AIBehaviour() { }
 
-    public AIBehaviour(PathFinder pathFinder, List<Condition> enter, List<Condition> exit, Action action)
+    public AIBehaviour(AI ai, Action action)
     {
-        aStar = pathFinder;
-        enterConditions = enter;
-        exitConditions = exit;
+        this.ai = ai;
         behaviourAction = action;
     }
 
     public virtual void OnEnter() //Command to be called when behaviour is entered
     {
-        coroutines.Add(aStar.StartCoroutine(Behaviour()));
+        StartCoroutine(Behaviour());
     }
 
     public virtual void OnExit() //Command to be called when behaviour is exited
     {
-        aStar.StopCoroutine(Behaviour()); //cancel current behaviour
-        foreach (var routine in coroutines)
+        StopCoroutines();
+    }
+
+    protected void StartCoroutine(IEnumerator routine)
+    {
+        coroutines.Add(ai.StartCoroutine(routine));
+    }
+
+    protected void StopCoroutines()
+    {
+        for ( int i = coroutines.Count-1; i>=0; i--)
         {
-            aStar.StopCoroutine(routine);
+            var routine = coroutines[i];
+            ai.StopCoroutine(routine);
+            coroutines.RemoveAt(i);
         }
     }
 
-    public static bool CheckConditions(List<Condition> list, out AIBehaviour newState)
+    public bool CheckConditions(List<Condition> list, out AIBehaviour newState)
     {
         newState = null;
         foreach (var con in list)
         {
             if (con.check.Invoke())
             {
-                newState = con.newBehaviour;
+                if (con.newBehaviour is null)
+                {
+                    newState = this;
+                }
+                else
+                {
+                    newState = con.newBehaviour;
+                }
                 return true;
             }
         }
         return false;
     }
 
+    //when AI has reached a location. May not be the location
+    //desired by this behaviour
     public virtual void OnTargetReached()
     {
         
@@ -82,5 +120,14 @@ public abstract class AIBehaviour : IBehaviour
     {
         behaviourAction.Invoke();
         yield return null;
+    }
+
+    public IEnumerator RepeatedAction(float delay, Action action)
+    {
+        while (true)
+        {
+            action.Invoke();
+            yield return new WaitForSeconds(delay);
+        }
     }
 }
