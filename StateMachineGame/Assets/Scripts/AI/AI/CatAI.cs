@@ -14,7 +14,7 @@ public class CatAI : AI
         tired.enterConditions.Add(new Condition(() => energy <= 25));
         tired.exitConditions.Add(new Condition(() => energy > 25, explore));
 
-        explore.exitConditions.Add(new Condition(() => energy <= 45, tired));
+        explore.exitConditions.Add(new Condition(() => energy <= 25));
 
         behaviours.Add(explore);
         behaviours.Add(tired);
