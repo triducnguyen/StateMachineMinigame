@@ -90,10 +90,13 @@ public class AI : MonoBehaviour
         for (int i = activeBehaviours.Count-1; i>=0; i--)
         {
             var behaviour = activeBehaviours[i];
-            if (behaviour.CheckConditions(behaviour.exitConditions, out next) && !activeBehaviours.Contains(next))
+            if (behaviour.CheckConditions(behaviour.exitConditions, out next))
             {
                 ExitBehaviour(behaviour);
-                EnterBehaviour(next);
+                if (next is object)
+                {
+                    EnterBehaviour(next);
+                }
             }
         }
         

@@ -38,6 +38,7 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
         aStar.destination = target;
         aStar.canSearch = true;
         aStar.SearchPath();
+        aStar.canMove = true;
         aStar.DestinationReached += OnTargetReached;
     }
 

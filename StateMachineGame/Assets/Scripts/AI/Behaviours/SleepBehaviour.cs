@@ -18,18 +18,8 @@ public class SleepBehaviour : AIBehaviour
         behaviourAction = behaviour is null ? () => Sleep() : behaviour;
     }
 
-    void RegainEnergy()
-    {
-        ai.energy += energyGain;
-    }
-
     void Sleep()
     {
-        StartCoroutine(RepeatedAction(sleepInterval, () => RegainEnergy()));
-    }
-
-    public override void OnEnter()
-    {
-        Sleep();
+        StartCoroutine(RepeatedAction(sleepInterval, () => ai.energy += energyGain));
     }
 }

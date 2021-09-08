@@ -13,6 +13,13 @@ public class AIBehaviour : IBehaviour
     float weight = 0;
 
     public string name = "Default";
+    public bool enabled
+    {
+        get;
+        protected set;
+    }
+    bool _enabled = false;
+
     public AI ai
     {
         get => _ai;
@@ -59,17 +66,29 @@ public class AIBehaviour : IBehaviour
 
     public virtual void OnEnter() //Command to be called when behaviour is entered
     {
+        enabled = true;
+        aStar.canSearch = true;
+        aStar.canMove = true;
         StartCoroutine(Behaviour());
     }
 
     public virtual void OnExit() //Command to be called when behaviour is exited
     {
+        enabled = false;
+        //clear pathfinding
+        aStar.destination = ai.position2D;
+        aStar.canSearch = false;
+        aStar.canMove = false;
         StopCoroutines();
     }
 
     protected void StartCoroutine(IEnumerator routine)
     {
-        coroutines.Add(ai.StartCoroutine(routine));
+        if (enabled)
+        {
+            coroutines.Add(ai.StartCoroutine(routine));
+        }
+        
     }
 
     protected void StopCoroutines()
@@ -87,16 +106,13 @@ public class AIBehaviour : IBehaviour
         newState = null;
         foreach (var con in list)
         {
-            if (con.check.Invoke())
+            if (con.givesNewBehaviour && con.newBehaviour is object)
             {
-                if (con.newBehaviour is null)
-                {
-                    newState = this;
-                }
-                else
-                {
-                    newState = con.newBehaviour;
-                }
+                newState = con.newBehaviour;
+                return true;
+            }
+            else if (!con.givesNewBehaviour && con.checkFunction.Invoke())
+            {
                 return true;
             }
         }

@@ -2,18 +2,21 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System.Linq;
 [System.Serializable]
 public class Condition
 {
-    public Func<bool> check;
+    public System.Linq.Expressions.Expression<Func<bool>> check;
+    public Func<bool> checkFunction;
     [SerializeField]
-    string checkExpression;
+    string expression;
+    public bool givesNewBehaviour = true;
+
     public AIBehaviour newBehaviour
     {
         get
         {
-            if (check.Invoke())
+            if (checkFunction.Invoke())
             {
                 return _newBehaviour;
             }
@@ -21,16 +24,18 @@ public class Condition
         }
         set
         {
+            givesNewBehaviour = value is null ? false : true;
             _newBehaviour = value;
         }
     }
     [SerializeField]
     AIBehaviour _newBehaviour;
 
-    public Condition(Func<bool> condition, AIBehaviour newBehaviour = null)
+    public Condition(System.Linq.Expressions.Expression<Func<bool>> condition, AIBehaviour newBehaviour = null)
     {
         check = condition;
-        checkExpression = check.ToString();
+        checkFunction = condition.Compile();
+        expression = condition.ToString();
         this.newBehaviour = newBehaviour;
     }
 }
