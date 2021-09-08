@@ -68,7 +68,6 @@ public class AIBehaviour : IBehaviour
     {
         enabled = true;
         aStar.canSearch = true;
-        aStar.canMove = true;
         StartCoroutine(Behaviour());
     }
 
@@ -77,8 +76,7 @@ public class AIBehaviour : IBehaviour
         enabled = false;
         //clear pathfinding
         aStar.destination = ai.position2D;
-        aStar.canSearch = false;
-        aStar.canMove = false;
+        aStar.SearchPath();
         StopCoroutines();
     }
 

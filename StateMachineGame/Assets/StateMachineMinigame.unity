@@ -11706,7 +11706,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966510ff5731a1a4fb0c5a63db4328f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energy: 60
+  energy: 10
   health: 100
   hunger: 51
   _activeBehaviours: []
