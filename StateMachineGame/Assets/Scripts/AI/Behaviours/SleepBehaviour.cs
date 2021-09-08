@@ -32,4 +32,9 @@ public class SleepBehaviour : AIBehaviour
     {
         Sleep();
     }
+
+    public override void OnExit()
+    {
+        base.OnExit();
+    }
 }
