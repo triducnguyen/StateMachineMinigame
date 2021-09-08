@@ -13,6 +13,9 @@ var artLayers;
 var setLayers;
 var layerSets;
 
+var mirrorsCheckBox;
+var exportMirrors;
+
 var okBtn;
 var okEnabled = true;
 var cancelBtn;
@@ -28,15 +31,13 @@ var height;
 function main()
 {
     baseDoc = app.activeDocument;
-    //window layout
+    //window
     var window = new Window("dialog", "Save Rule Tiles");
-    //var layers = app.activeDocument.layers;
-    //var txt = window.add("edittext");
     
     //controls
     baseLayerDD = window.add("dropdownlist");
-
     ruleLayerDD = window.add("dropdownlist");
+    mirrorsCheckBox = window.add("checkbox", undefined, "Export Mirrors", ["Export Mirrors"]);
     var windowControls = window.add("panel")
         okBtn = windowControls.add("button", undefined ,"Save");
         cancelBtn = windowControls.add("button", undefined, "Cancel");
@@ -306,7 +307,10 @@ function SaveBoth(folder, baseLayer, ruleLayer)
 {
     //alert("saving original and flipped version");
     Save(folder, baseLayer, ruleLayer, false);
-    Save(folder, baseLayer, ruleLayer, true);
+    if(exportMirrors)
+    {
+        Save(folder, baseLayer, ruleLayer, true);
+    }
 }
 
 function Save(folder, baseLayer, ruleLayer, flip)
@@ -314,6 +318,8 @@ function Save(folder, baseLayer, ruleLayer, flip)
     //alert("Saving");
     var doc = CreateDoc();
     //alert("before");
+    var layers;
+    
     var layers = flip ?
         DuplicateAndFlip(doc,baseLayer,ruleLayer) : Duplicate(doc, baseLayer, ruleLayer);
     //alert("Before save");
