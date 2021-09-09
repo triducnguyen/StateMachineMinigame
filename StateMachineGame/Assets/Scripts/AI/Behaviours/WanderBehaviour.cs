@@ -32,13 +32,14 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
     /// <param name="max"></param>
     void Explore(float max)
     {
+        //remove old coroutine
+        StopCoroutines();
         //get direction
         var direction = URandom.insideUnitCircle * URandom.Range(0, max); //get a random point within circle
         target = direction;
         aStar.destination = target;
         aStar.canSearch = true;
         aStar.SearchPath();
-        aStar.canMove = true;
         aStar.DestinationReached += OnTargetReached;
     }
 

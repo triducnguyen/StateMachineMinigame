@@ -9,6 +9,8 @@ using UnityEngine;
 [System.Serializable]
 public class AI : MonoBehaviour
 {
+    Coroutine behaviourCheck;
+
 
     //stats
     public float energy = 100;
@@ -36,13 +38,13 @@ public class AI : MonoBehaviour
     public List<AIBehaviour> activeBehaviours
     {
         get { return _activeBehaviours; }
-        protected set 
+        protected set
         {
             if (activeBehaviours is object)
             {
                 ExitBehaviours();
             }
-             _activeBehaviours = value;
+            _activeBehaviours = value;
         } //exits the current behaviour before it is changed
     } //Current behaviours tells ai how to act
 
@@ -64,16 +66,24 @@ public class AI : MonoBehaviour
         {
             aStar = GetComponent<PathFinder>();
         }
+        //start behaviour check coroutine to make it happen less often
+        behaviourCheck = StartCoroutine(CheckNew());
     }
 
     // Start is called before the first frame update
     protected virtual void Start()
     {
-         
+
     }
 
     // Update is called once per frame
     protected virtual void Update()
+    {
+
+
+    }
+
+    void CheckNewBehviours()
     {
         AIBehaviour next;
         //check enter conditions on all states
@@ -87,7 +97,7 @@ public class AI : MonoBehaviour
         }
 
         //check exit conditions for active states
-        for (int i = activeBehaviours.Count-1; i>=0; i--)
+        for (int i = activeBehaviours.Count - 1; i >= 0; i--)
         {
             var behaviour = activeBehaviours[i];
             if (behaviour.CheckConditions(behaviour.exitConditions, out next))
@@ -99,7 +109,6 @@ public class AI : MonoBehaviour
                 }
             }
         }
-        
     }
 
     public void EnterBehaviour(AIBehaviour behaviour)
@@ -123,6 +132,15 @@ public class AI : MonoBehaviour
             var behaviour = activeBehaviours[i];
             behaviour.OnExit();
             activeBehaviours.RemoveAt(i);
+        }
+    }
+
+    IEnumerator CheckNew()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.1f);
+            CheckNewBehviours();
         }
     }
 }

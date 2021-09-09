@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using Pathfinding;
 
 [System.Serializable]
 public class AIBehaviour : IBehaviour
@@ -20,6 +21,12 @@ public class AIBehaviour : IBehaviour
     }
     bool _enabled = false;
 
+    public bool behaviourStarted
+    {
+        get;
+        protected set;
+    }
+    bool _behaviourStarted;
     public AI ai
     {
         get => _ai;
@@ -68,7 +75,7 @@ public class AIBehaviour : IBehaviour
     {
         enabled = true;
         aStar.canSearch = true;
-        StartCoroutine(Behaviour());
+        Behaviour();
     }
 
     public virtual void OnExit() //Command to be called when behaviour is exited
@@ -86,7 +93,6 @@ public class AIBehaviour : IBehaviour
         {
             coroutines.Add(ai.StartCoroutine(routine));
         }
-        
     }
 
     protected void StopCoroutines()
@@ -130,10 +136,14 @@ public class AIBehaviour : IBehaviour
         behaviourAction.Invoke();
     }
 
-    public IEnumerator Behaviour()
+    public void Behaviour()
     {
-        behaviourAction.Invoke();
-        yield return null;
+        
+        if (!behaviourStarted)
+        {
+            behaviourStarted = true;
+            behaviourAction.Invoke();
+        }
     }
 
     public IEnumerator RepeatedAction(float delay, Action action)
