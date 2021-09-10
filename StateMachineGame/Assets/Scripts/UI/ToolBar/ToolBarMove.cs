@@ -1,37 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Animations;
+using TouchScript.Gestures;
+using TouchScript.Hit;
+using TouchScript.Pointers;
 using UnityEngine;
 
-public class ToolBarMove : FingerMove
+public class ToolBarMove : HitTest
 {
     public Animator controller;
-
     public bool toggled
     {
-        get
-        {
-            return controller.GetBool("toggled");
-        }
-        protected set
-        {
-            controller.SetBool("toggled", value);
-        }
+        get { return controller.GetBool("toggled"); }
+        protected set { controller.SetBool("toggled", value); }
     }
 
-    public override void OnSingleFingerUp(Vector2 position)
+    bool notAnimating
     {
-        Debug.Log("Clicked");
-        //toggle toolbar
-        if (controller.GetCurrentAnimatorStateInfo(0).normalizedTime > 1 && !controller.IsInTransition(0))
+        get => (controller.GetCurrentAnimatorStateInfo(0).normalizedTime > 1);
+    }
+
+    public void Tap()
+    {
+        Debug.Log("tapping");
+        if (notAnimating)
         {
+            Debug.Log("Not animating");
             if (toggled)
             {
-                controller.Play("TrayClosed", 0, 0);
+                controller.Play("TrayClosed");
             }
             else
             {
-                controller.Play("TrayOpen", 0, 0);
+                controller.Play("TrayOpen");
             }
             toggled = !toggled;
         }

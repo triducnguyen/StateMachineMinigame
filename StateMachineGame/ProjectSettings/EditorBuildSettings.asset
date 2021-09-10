@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/StateMachineMinigame.unity
+    guid: ed90f485edd3ad4458bb259c1c76d809
   m_configObjects: {}

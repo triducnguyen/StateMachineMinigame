@@ -36,7 +36,7 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
         StopCoroutines();
         //get direction
         var direction = URandom.insideUnitCircle * URandom.Range(0, max); //get a random point within circle
-        target = direction;
+        target = ai.position2D + direction;
         aStar.destination = target;
         aStar.canSearch = true;
         aStar.SearchPath();
