@@ -1,18 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TouchScript;
+using TouchScript.Gestures;
+using TouchScript.Gestures.TransformGestures;
+using TouchScript.Gestures.TransformGestures.Base;
 using UnityEngine;
 
-public class CameraMove : FingerMove
+public class CameraMove : MonoBehaviour
 {
-    protected override void _processSwipe(Vector2 screenTravel)
-    {
-        //move the game world
-        transform.position += new Vector3(screenTravel.x, screenTravel.y, transform.position.z);
-    }
+    public Camera camera;
+    //public Transform world;
 
-    protected override void _processPinch(float delta)
+    public void TransformChanges(Gesture gesture)
     {
-        //zoom
-        base._processPinch(delta);
+        //check changes
+        var tgesture = (TransformGesture)gesture;
+        if (tgesture is object)
+        {
+            camera.transform.position -= tgesture.DeltaPosition;
+            camera.orthographicSize *= 1/tgesture.DeltaScale;
+        }
     }
 }

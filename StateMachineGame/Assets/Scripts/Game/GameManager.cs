@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    enum ControlScheme
+    private static GameManager _instance;
+    public static GameManager Instance { get => _instance; }
+
+    public enum ControlScheme
     {
         MouseKeyboard,
         Touch
     }
 
-    ControlScheme controls = ControlScheme.MouseKeyboard;
+    public ControlScheme controls
+    {
+        get => _controls;
+        set => _controls = value;
+    }
+    ControlScheme _controls = ControlScheme.MouseKeyboard;
 
     private void Awake()
     {
+        CheckSingleton();
         //game setup.
         DontDestroyOnLoad(this);
 
@@ -36,12 +45,17 @@ public class GameManager : MonoBehaviour
                 controls = ControlScheme.Touch;
                 break;
         }
-
-        if (controls == ControlScheme.MouseKeyboard)
-        {
-            //set mouse cursor
-            
-        }
     }
 
+    void CheckSingleton()
+    {
+        if (_instance is object && _instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            _instance = this;
+        }
+    }
 }
