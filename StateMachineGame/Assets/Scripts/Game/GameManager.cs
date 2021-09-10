@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
     public static GameManager Instance { get => _instance; }
 
+    public List<AI> ai = new List<AI>();
+
     public enum ControlScheme
     {
         MouseKeyboard,

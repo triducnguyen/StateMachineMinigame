@@ -11,7 +11,8 @@ using Pathfinding;
 public class ScaredBehaviour : AIBehaviour, IBehaviour
 {
     public float scareDistance;
-    private Vector3 target;
+    public bool reachedDestination;
+    //private Vector3 target;
     public Transform mouse;
     public Transform cat;
 
@@ -39,10 +40,12 @@ public class ScaredBehaviour : AIBehaviour, IBehaviour
     public override void OnTargetReached()
     {
         //check if it was the destination we wanted
-        if (aStar.destination == target)
+        if ((Vector2)aStar.destination == target)
         {
             //start the behaviour again
             aStar.canSearch = false;
+            reachedDestination = true;
+            ai.ExitBehaviour(this);
         }
     }
     public override void OnExit()

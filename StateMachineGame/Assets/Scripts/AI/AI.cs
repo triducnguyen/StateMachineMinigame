@@ -11,6 +11,7 @@ public class AI : MonoBehaviour
 {
     Coroutine behaviourCheck;
 
+    public GameManager manager;
 
     //stats
     public float energy = 100;
@@ -68,6 +69,14 @@ public class AI : MonoBehaviour
         }
         //start behaviour check coroutine to make it happen less often
         behaviourCheck = StartCoroutine(CheckNew());
+        if (manager is null)
+        {
+            manager = GameManager.Instance;
+        }
+        if (!manager.ai.Contains(this))
+        {
+            manager.ai.Add(this);
+        }
     }
 
     // Start is called before the first frame update

@@ -11,8 +11,8 @@ public class MouseAI : AI
     public Transform cat;
     private Transform mouse;
     private ScaredBehaviour scare;
-    private bool enterScare;
-    private bool exitScare;
+    private bool scared;
+
     protected override void Awake()
     {
         base.Awake();
@@ -22,10 +22,10 @@ public class MouseAI : AI
         var scare = new ScaredBehaviour(this, 3f, mouse, cat);
         this.scare = scare;
 
-        wander.enterConditions.Add(new Condition(() => hunger <= 50 && energy >= 45 && !enterScare));
-        wander.exitConditions.Add(new Condition(() => enterScare, scare));
+        wander.enterConditions.Add(new Condition(() => hunger <= 50 && energy >= 45 && !scared));
+        wander.exitConditions.Add(new Condition(() => scared, scare));
 
-        scare.exitConditions.Add(new Condition(() => !enterScare, wander));
+        scare.exitConditions.Add(new Condition(() => scare.reachedDestination, wander));
 
         behaviours.Add(wander);
         behaviours.Add(scare);
@@ -39,21 +39,45 @@ public class MouseAI : AI
             //make a home
     }
 
+
+    IEnumerator CheckScare()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(.1f);
+            //get distance from closest cat
+            var cats = manager.ai.Find(match => match.GetType() == typeof(CatAI));
+            float dist = 0f;
+            //find closest cat
+            //check distance
+            if (dist < 3f)
+            {
+                scared = true;
+            }
+            else
+            {
+                scared = false;
+            }
+            
+        }
+        
+    }
+
     // Update is called once per frame
     protected override void Update()
     {
-        dist = Vector3.Distance(mouse.position, cat.position);
-        Debug.Log(dist);
-        if(Vector3.Distance(mouse.position, cat.position) < 2f)
-        {
-            scare.cat = cat;
-            enterScare = true;
-        }
-        else
-        {
-            enterScare = false;
-            Debug.Log("EnterScare " + enterScare);
-        }
+        //dist = Vector3.Distance(mouse.position, cat.position);
+        //Debug.Log(dist);
+        //if(Vector3.Distance(mouse.position, cat.position) < 2f)
+        //{
+        //    scare.cat = cat;
+        //    enterScare = true;
+        //}
+        //else
+        //{
+        //    enterScare = false;
+        //    Debug.Log("EnterScare " + enterScare);
+        //}
 
         base.Update();
     }
