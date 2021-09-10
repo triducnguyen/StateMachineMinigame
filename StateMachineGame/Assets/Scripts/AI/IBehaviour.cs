@@ -5,7 +5,7 @@ using UnityEngine;
 
 public interface IBehaviour
 {
-    public IEnumerator Behaviour();
+    public void Behaviour();
     //when the behaviour changes
     public void OnEnter();
     public void OnExit();
