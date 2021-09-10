@@ -28,7 +28,7 @@ public class Condition
             _newBehaviour = value;
         }
     }
-    [SerializeField]
+    [NonSerialized]
     AIBehaviour _newBehaviour;
 
     public Condition(System.Linq.Expressions.Expression<Func<bool>> condition, AIBehaviour newBehaviour = null)
