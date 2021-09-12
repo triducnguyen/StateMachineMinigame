@@ -5,7 +5,8 @@ using UnityEngine.Tilemaps;
 public class ExtendedRuleTile : RuleTile
 {
 
-    public string type;
+    public string thisType;
+    public string tile;
     public override bool RuleMatch(int neighbor, TileBase other)
     {
         if (other is RuleOverrideTile)
@@ -19,10 +20,10 @@ public class ExtendedRuleTile : RuleTile
         switch (neighbor)
         {
             case TilingRule.Neighbor.This: 
-                return type == otherTile.type;
+                return thisType == otherTile.thisType;
 
             case TilingRule.Neighbor.NotThis:
-                return type != otherTile.type;
+                return thisType != otherTile.thisType;
         }
         return true;
 

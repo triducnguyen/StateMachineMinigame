@@ -2,18 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cultivator : MonoBehaviour
+public class Cultivator : Tool
 {
 
-    // Start is called before the first frame update
-    void Start()
+    public Cultivator(Sprite sprite) : base("Hand Cultivator", "tiller", 1f, sprite)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
-        
+        switch (tile.tile)
+        {
+            case "grass":
+                SetTile("tilleddry", pos);
+                break;
+            case "dirtdry":
+                SetTile("tilleddry", pos);
+                break;
+            case "dirtwet":
+                SetTile("tilledwet", pos);
+                break;
+        }
     }
 }

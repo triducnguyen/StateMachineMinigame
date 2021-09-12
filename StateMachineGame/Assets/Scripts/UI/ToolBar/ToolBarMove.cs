@@ -8,6 +8,7 @@ using UnityEngine;
 public class ToolBarMove : HitTest
 {
     public Animator controller;
+    public TapGesture tapGesture;
     public bool toggled
     {
         get { return controller.GetBool("toggled"); }
@@ -19,7 +20,18 @@ public class ToolBarMove : HitTest
         get => (controller.GetCurrentAnimatorStateInfo(0).normalizedTime > 1);
     }
 
-    public void Tap()
+    private void OnEnable()
+    {
+        tapGesture = GetComponent<TapGesture>();
+        tapGesture.Tapped += Tap;
+    }
+
+    private void OnDisable()
+    {
+        tapGesture.Tapped -= Tap;
+    }
+
+    public void Tap(object sender, System.EventArgs e)
     {
         Debug.Log("tapping");
         if (notAnimating)

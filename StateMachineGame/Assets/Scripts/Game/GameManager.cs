@@ -1,13 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
     private static GameManager _instance;
     public static GameManager Instance { get => _instance; }
 
+    public Canvas canvas;
+    public Camera cam;
+
+    public Tilemap tilemap;
+
     public List<AI> ai = new List<AI>();
+
+    public Tool tool;
 
     public enum ControlScheme
     {
@@ -26,8 +34,7 @@ public class GameManager : MonoBehaviour
     {
         CheckSingleton();
         //game setup.
-        DontDestroyOnLoad(this);
-
+        DontDestroyOnLoad(gameObject);
         //check platform
         switch (Application.platform)
         {
@@ -47,6 +54,7 @@ public class GameManager : MonoBehaviour
                 controls = ControlScheme.Touch;
                 break;
         }
+        tool = ToolDictionary.Instance.tools["hand"];
     }
 
     void CheckSingleton()

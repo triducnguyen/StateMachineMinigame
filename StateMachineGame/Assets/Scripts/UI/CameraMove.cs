@@ -9,17 +9,31 @@ using UnityEngine;
 
 public class CameraMove : MonoBehaviour
 {
+    public RectTransform rTransform;
+    public Canvas canvas;
     public Camera camera;
+    public TransformGesture tGesture;
     //public Transform world;
 
-    public void TransformChanges(Gesture gesture)
+    private void OnEnable()
     {
-        //check changes
-        var tgesture = (TransformGesture)gesture;
-        if (tgesture is object)
-        {
-            camera.transform.position -= tgesture.DeltaPosition;
-            camera.orthographicSize *= 1/tgesture.DeltaScale;
-        }
+        tGesture.Transformed += TransformChanges;
+    }
+
+    private void OnDisable()
+    {
+        tGesture.Transformed -= TransformChanges;
+    }
+
+    public void TransformChanges(object sender, System.EventArgs e)
+    {
+        camera.transform.position -= tGesture.DeltaPosition;
+        camera.orthographicSize *= 1 / tGesture.DeltaScale;
+    }
+
+    private void Update()
+    {
+        //update size of touch layer
+        rTransform.sizeDelta = new Vector2(canvas.pixelRect.width, canvas.pixelRect.height);
     }
 }
