@@ -2,9 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//[RequireComponent(typeof())]
 public class TileObject : MonoBehaviour
 {
+    public delegate void TileChanged(object sender, System.EventArgs args);
 
+    public event TileChanged Destroyed;
+
+    public bool occupied = false;
     public Vector2 tilePos
     {
         get => transform.position;
@@ -26,15 +31,28 @@ public class TileObject : MonoBehaviour
             tile = (ExtendedRuleTile)GameManager.Instance.tilemap.GetTile(Vector3Int.FloorToInt(tilePos));
             type = tile.tile;
         }
+        //check occupied
+        CheckOccupied();
     }
-    // Start is called before the first frame update
-    void Start()
+
+    private void CheckOccupied()
     {
-        //
+        Camera cam = GameManager.Instance.cam;
+        Vector3 worldPos = tilePos * 2;
+        worldPos.z = -3;
+        RaycastHit hit;
+        if (Physics.Raycast(cam.ScreenPointToRay(worldPos), out hit, 4f, LayerMask.NameToLayer("occupied")))
+        {
+            //position is occupied
+            occupied = true;
+        }
     }
-    
+
     private void OnDestroy()
     {
-        //what to do when tile is destroyed/changed
+        if (Destroyed is object)
+        {
+            Destroyed(this, new System.EventArgs());
+        }
     }
 }

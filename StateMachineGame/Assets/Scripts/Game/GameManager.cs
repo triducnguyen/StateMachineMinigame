@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public Tilemap tilemap;
 
     public List<AI> ai = new List<AI>();
+    public List<Growable> growables = new List<Growable>();
 
     public Tool tool;
 

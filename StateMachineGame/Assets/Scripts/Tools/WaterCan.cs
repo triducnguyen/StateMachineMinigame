@@ -4,22 +4,17 @@ using UnityEngine;
 
 public class WaterCan : Tool
 {
-    public WaterCan(Sprite sprite):base("Water Can", "water", 2f, sprite)
+    public WaterCan(Sprite sprite):base("Water Can","WaterCan", "water", 2f, sprite)
     {
         offset = new Vector2(-10f, -30f);
     }
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
-        switch (tile.tile)
+        string tiletype;
+        if (ToolUseDictionary.Instance.ToolUse.TryGetValue(new System.Tuple<string, string>(name, tile.tile), out tiletype))
         {
-            case "dirtdry":
-                //wet the dirt
-                SetTile("dirtwet", pos);
-                break;
-            case "tilleddry":
-                SetTile("tilledwet", pos);
-                break;
+            SetTile(tiletype, pos);
         }
     }
 }

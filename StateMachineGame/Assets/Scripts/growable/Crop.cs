@@ -13,15 +13,19 @@ public class Crop : Growable
     }
     bool _harvestable;
 
-    // Start is called before the first frame update
-    void Start()
+    public virtual void Harvest()
     {
-        
+        if (harvestable)
+        {
+            //add items to storage
+
+            //destroy crop
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void OnGrowableDestroyed()
     {
-        Grow();
+        Destroy(this);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cultivator : Tool
 {
 
-    public Cultivator(Sprite sprite) : base("Hand Cultivator", "tiller", 1f, sprite)
+    public Cultivator(Sprite sprite) : base("Hand Cultivator", "HandCultivator", "cultivator", 1f, sprite)
     {
     }
 

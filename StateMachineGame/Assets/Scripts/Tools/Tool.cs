@@ -10,6 +10,11 @@ public class Tool
     public Sprite sprite;
     public Vector2 offset = Vector2.zero;
 
+    public string displayName
+    {
+        get;
+        protected set;
+    }
     public string name
     {
         get;
@@ -51,7 +56,7 @@ public class Tool
     public float toolRadius;
 
     //tool
-    public Tool(string name, string type, float radius, Sprite sprite) { this.name = name; this.type = type; toolRadius = radius; this.sprite = sprite; }
+    public Tool(string displayName, string name, string type, float radius, Sprite sprite) { this.displayName = displayName; this.name = name; this.type = type; toolRadius = radius; this.sprite = sprite; }
 
     public virtual void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
