@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class YRenderLevel : MonoBehaviour
 {
-    
+    public Vector3 lastPos;
     public int LayerIndex
     {
         get
@@ -26,15 +26,19 @@ public class YRenderLevel : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        spriteRenderer.sortingOrder = LayerIndex;
+        lastPos = target.position;
     }
 
     // Update is called once per frame
     void Update()
     {
         //update renderer sorting layer
-        spriteRenderer.sortingOrder = LayerIndex;
+        if (lastPos != target.position)
+        {
+            spriteRenderer.sortingOrder = LayerIndex;
+        }
     }
 }

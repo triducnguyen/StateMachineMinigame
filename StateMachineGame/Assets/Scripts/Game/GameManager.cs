@@ -12,9 +12,47 @@ public class GameManager : MonoBehaviour
     public Camera cam;
 
     public Tilemap tilemap;
+    public GameObject world;
+    public GameObject worldObjects;
 
-    public List<AI> ai = new List<AI>();
-    public List<Growable> growables = new List<Growable>();
+    public List<AI> ai
+    {
+        get
+        {
+            List<AI> tmp = new List<AI>();
+            foreach (Transform t in worldObjects.transform)
+            {
+                AI current;
+                GameObject gobject = t.gameObject;
+                if (gobject.TryGetComponent(out current))
+                {
+                    tmp.Add(current);
+                }
+            }
+            return tmp;
+        }
+    }
+
+    
+    
+    public List<Growable> growables
+    {
+        get
+        {
+            List<Growable> tmp = new List<Growable>();
+            foreach (Transform t in worldObjects.transform)
+            {
+                Growable current;
+                GameObject gobject = t.gameObject;
+                if (gobject.TryGetComponent(out current))
+                {
+                    tmp.Add(current);
+                }
+            }
+            return tmp;
+        }
+    }
+
 
     public Tool tool;
 
@@ -55,6 +93,10 @@ public class GameManager : MonoBehaviour
                 controls = ControlScheme.Touch;
                 break;
         }
+        
+        worldObjects = worldObjects == null ? new GameObject() : worldObjects;
+        worldObjects.transform.parent = world.transform;
+        worldObjects.transform.position = Vector3.zero;
         tool = ToolDictionary.Instance.tools["hand"];
     }
 

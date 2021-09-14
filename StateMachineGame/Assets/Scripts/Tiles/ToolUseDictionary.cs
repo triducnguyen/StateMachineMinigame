@@ -25,11 +25,11 @@ public class ToolUseDictionary : MonoBehaviour
         //cultivator + dirtwet = tilledwet
         //cultivator + grass = tilleddry
 
-        ToolUse.Add(new System.Tuple<string, string>("WateringCan","dirtdry"), "dirtwet");
-        ToolUse.Add(new System.Tuple<string, string>("WateringCan","tilleddry"), "tilledwet");
-        ToolUse.Add(new System.Tuple<string, string>("HandCultivator", "dirtdry"), "tilleddry");
-        ToolUse.Add(new System.Tuple<string, string>("HandCultivator", "dirtwet"), "tilledwet");
-        ToolUse.Add(new System.Tuple<string, string>("HandCultivator", "grass"), "tilleddry");
+        //ToolUse.Add(new System.Tuple<string, string>("WateringCan","dirtdry"), "dirtwet");
+        //ToolUse.Add(new System.Tuple<string, string>("WateringCan","tilleddry"), "tilledwet");
+        //ToolUse.Add(new System.Tuple<string, string>("HandCultivator", "dirtdry"), "tilleddry");
+        //ToolUse.Add(new System.Tuple<string, string>("HandCultivator", "dirtwet"), "tilledwet");
+        //ToolUse.Add(new System.Tuple<string, string>("HandCultivator", "grass"), "tilleddry");
     }
 
     void CheckSingleton()

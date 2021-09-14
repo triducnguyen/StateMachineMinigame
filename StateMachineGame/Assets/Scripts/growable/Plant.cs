@@ -16,7 +16,7 @@ public class Plant : Growable
     {
         get
         {
-            var cropYield = Mathf.RoundToInt(UnityEngine.Random.Range(0, 1) * maxCrops);
+            var cropYield = Mathf.RoundToInt(UnityEngine.Random.Range(0f, 1f) * maxCrops);
             cropYield = cropYield < minCrops ? minCrops : cropYield;
             cropYield = cropYield > maxCrops ? maxCrops : cropYield;
             return cropYield;
@@ -32,17 +32,17 @@ public class Plant : Growable
     public List<GameObject> growingCrops = new List<GameObject>();
 
 
-    protected virtual void Harvest()
+    public virtual void Harvest()
     {
         
     }
 
-    protected virtual void AddCrop(GameObject crop)
+    public virtual void AddCrop(GameObject crop)
     {
         growingCrops.Add(Instantiate(crop, transform));
     }
     
-    protected virtual void RemoveCrop(GameObject crop)
+    public virtual void RemoveCrop(GameObject crop)
     {
         growingCrops.Remove(crop);
         Destroy(crop);

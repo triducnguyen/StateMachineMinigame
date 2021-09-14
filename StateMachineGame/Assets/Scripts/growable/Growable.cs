@@ -7,11 +7,13 @@ using UnityEngine;
 public class Growable : MonoBehaviour
 {
     public delegate void StageChanged(object sender, System.EventArgs args);
+    public delegate void GrowableDestroyed(System.EventArgs args);
 
 
     public event StageChanged OnStageUp;
     //event StageChanged OnStageDown;
     public event StageChanged OnFinalStage;
+    public event GrowableDestroyed OnDestroyed;
 
     //animate the growable
     public Animator animator;
@@ -100,20 +102,18 @@ public class Growable : MonoBehaviour
             {
                 _growth = 0;
                 stage++;
+                if (OnStageUp != null)
+                {
+                    OnStageUp(this, new System.EventArgs());
+                }
+                growthCycleModifier += UnityEngine.Random.Range(0f, 1f)*0.1f;
                 if (stage >= stages)
                 {
                     //stop growing
                     canGrow = false;
-                    if (OnFinalStage is object)
+                    if (OnFinalStage != null)
                     {
                         OnFinalStage(this, new System.EventArgs());
-                    }
-                }
-                else
-                {
-                    if (OnStageUp is object)
-                    {
-                        OnStageUp(this, new System.EventArgs());
                     }
                 }
             }
@@ -150,12 +150,12 @@ public class Growable : MonoBehaviour
     protected virtual void Subscribe()
     {
         OnStageUp += StageUp;
-        OnFinalStage += OnFinalStage;
+        OnFinalStage += FinalStage;
     }
     protected virtual void Unsubscribe()
     {
         OnStageUp -= StageUp;
-        OnFinalStage -= OnFinalStage;
+        OnFinalStage -= FinalStage;
     }
 
     protected virtual void StartGrow()
@@ -185,12 +185,16 @@ public class Growable : MonoBehaviour
 
     protected virtual void OnGrowableDestroyed()
     {
-        //
+        Destroy(gameObject);
     }
 
 
     private void OnDestroy()
     {
         Unsubscribe();
+        if (OnDestroyed != null)
+        {
+            OnDestroyed(new System.EventArgs());
+        }
     }
 }

@@ -11,6 +11,7 @@ public class Crop : Growable
         get => _harvestable;
         set => _harvestable = value;
     }
+    [SerializeField]
     bool _harvestable;
 
     public virtual void Harvest()
@@ -19,8 +20,6 @@ public class Crop : Growable
         {
             //add items to storage
 
-            //destroy crop
-            Destroy(gameObject);
         }
     }
 

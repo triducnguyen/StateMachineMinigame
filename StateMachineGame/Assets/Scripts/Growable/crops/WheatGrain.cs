@@ -9,10 +9,4 @@ public class WheatGrain : Crop
     {
         harvestable = true;
     }
-
-    protected override void StageUp(object sender, EventArgs e)
-    {
-        //immediately ready to harvest
-        harvestable = true;
-    }
 }

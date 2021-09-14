@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class WheatSeed : Tool
 {
-    GameObject wheatPrefab;
+    GameObject wheatContainerPrefab;
 
     public WheatSeed(Sprite sprite) : base("Wheat Seeds", "WheatSeed", "seed", 1f, sprite)
     {
-        wheatPrefab = PrefabDictionary.Instance.prefabList["wheatplant"];
+        wheatContainerPrefab = PrefabDictionary.Instance.prefabList["wheatplant"];
     }
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
@@ -21,9 +21,12 @@ public class WheatSeed : Tool
             if (!tobject.occupied && tile.tile.Contains("tilled"))
             {
                 //add wheat object to this pos
-                GameObject.Instantiate(wheatPrefab);
-                Vector3 worldPos = (pos / 2)+new Vector3(.5f,.5f,0f);
-                wheatPrefab.transform.position = worldPos;
+                tobject.SetOccupier(GameObject.Instantiate(wheatContainerPrefab, GameManager.Instance.worldObjects.transform));
+                var wheatContainer = tobject.occupier.GetComponent<WheatContainer>();
+                Vector3 localPos = (Vector3)pos / 2f;
+                Vector3 worldPos = GameManager.Instance.tilemap.transform.localToWorldMatrix * localPos;
+                tobject.occupier.transform.position = worldPos + new Vector3(.25f,.25f);
+                //Debug.Log(tobject.transform.position);
                 tobject.occupied = true;
             }
         }

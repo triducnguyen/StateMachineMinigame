@@ -5,9 +5,22 @@ using UnityEngine;
 //[RequireComponent(typeof())]
 public class TileObject : MonoBehaviour
 {
-    public delegate void TileChanged(object sender, System.EventArgs args);
+    Coroutine occupiedCheck;
 
+    public delegate void TileChanged(object sender, System.EventArgs args);
     public event TileChanged Destroyed;
+    public GameObject occupier
+    {
+        get
+        {
+            return _occupier;
+        }
+        set
+        {
+            _occupier = value;
+        }
+    }
+    GameObject _occupier = null;
 
     public bool occupied = false;
     public Vector2 tilePos
@@ -26,7 +39,7 @@ public class TileObject : MonoBehaviour
     private void Awake()
     {
         //initialize tile object
-        if ( this is object && tile is null)
+        if (tile == null)
         {
             tile = (ExtendedRuleTile)GameManager.Instance.tilemap.GetTile(Vector3Int.FloorToInt(tilePos));
             type = tile.tile;
@@ -35,17 +48,49 @@ public class TileObject : MonoBehaviour
         CheckOccupied();
     }
 
-    private void CheckOccupied()
+    protected virtual void CheckOccupied()
     {
-        Camera cam = GameManager.Instance.cam;
         Vector3 worldPos = tilePos * 2;
         worldPos.z = -3;
+        if (occupier != null)
+        {
+            occupied = true;
+            return;
+        }
         RaycastHit hit;
-        if (Physics.Raycast(cam.ScreenPointToRay(worldPos), out hit, 4f, LayerMask.NameToLayer("occupied")))
+        if (Physics.Raycast(GameManager.Instance.cam.ScreenPointToRay(worldPos), out hit, 4f, LayerMask.NameToLayer("Occupied")) )
         {
             //position is occupied
             occupied = true;
+            occupier = hit.collider.gameObject;
+            return;
         }
+        occupied = false;
+    }
+
+    public void SetOccupier(GameObject occupier)
+    {
+        this.occupier = occupier;
+        CheckOccupied();
+    }
+
+    public virtual void OnOccupierDestroyed(System.EventArgs args)
+    {
+        occupiedCheck = StartCoroutine(CheckOccupier());
+    }
+
+    IEnumerator CheckOccupier()
+    {
+        yield return new WaitForSeconds(0.1f);
+        StopCoroutine(occupiedCheck);
+        CheckOccupied();
+    }
+
+    public virtual void DestroyOccupier()
+    {
+        Destroy(occupier);
+        occupier = null;
+        CheckOccupied();
     }
 
     private void OnDestroy()

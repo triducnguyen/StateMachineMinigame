@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8061916083198478372}
   - component: {fileID: 8061916083198478373}
   - component: {fileID: 8061916083198478378}
+  - component: {fileID: 4352088171956857779}
   m_Layer: 0
   m_Name: Wheat
   m_TagString: Untagged
@@ -77,9 +78,24 @@ MonoBehaviour:
   _growth: 0
   maxCrops: 5
   minCrops: 1
+  yield: 1
   growableCrops:
   - {fileID: 4985847464200551251, guid: d977035b9a2f4fc4da7dfc0b55494f84, type: 3}
   growingCrops: []
+--- !u!114 &4352088171956857779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061916083198478379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 181688d9489acf445a3e08fd05f5e83c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 8061916083198478372}
+  spriteRenderer: {fileID: 8061916083828329660}
 --- !u!1 &8061916083828329634
 GameObject:
   m_ObjectHideFlags: 0

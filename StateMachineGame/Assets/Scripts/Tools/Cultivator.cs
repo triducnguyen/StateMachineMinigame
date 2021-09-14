@@ -11,17 +11,15 @@ public class Cultivator : Tool
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
-        switch (tile.tile)
+        string newTile;
+        if (tile.tile.Contains("dirt"))
         {
-            case "grass":
-                SetTile("tilleddry", pos);
-                break;
-            case "dirtdry":
-                SetTile("tilleddry", pos);
-                break;
-            case "dirtwet":
-                SetTile("tilledwet", pos);
-                break;
+            newTile = tile.tile.Replace("dirt", "tilled");
+            SetTile(newTile, pos);
+        }
+        else if (tile.tile == "grass")
+        {
+            SetTile("tilleddry", pos);
         }
     }
 }

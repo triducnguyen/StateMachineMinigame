@@ -11,9 +11,9 @@ public class WaterCan : Tool
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
-        string tiletype;
-        if (ToolUseDictionary.Instance.ToolUse.TryGetValue(new System.Tuple<string, string>(name, tile.tile), out tiletype))
+        if (tile.tile.Contains("dry"))
         {
+            string tiletype = tile.tile.Replace("dry","wet");
             SetTile(tiletype, pos);
         }
     }
