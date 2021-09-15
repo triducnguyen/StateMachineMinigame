@@ -33,7 +33,7 @@ public class ToolBarMove : HitTest
 
     public void Tap(object sender, System.EventArgs e)
     {
-        Debug.Log("tapping");
+        //Debug.Log("tapping");
         if (notAnimating)
         {
             Debug.Log("Not animating");

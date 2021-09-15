@@ -28,4 +28,14 @@ public class ExtendedRuleTile : RuleTile
         return true;
 
     }
+
+    public override bool StartUp(Vector3Int position, ITilemap tilemap, GameObject instantiatedGameObject)
+    {
+        //return base.StartUp(position, tilemap, instantiatedGameObject);
+        if (instantiatedGameObject != null)
+        {
+            instantiatedGameObject.transform.position = (Vector3)position / 2f;
+        }
+        return true;
+    }
 }

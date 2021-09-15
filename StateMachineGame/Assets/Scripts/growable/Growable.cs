@@ -196,5 +196,6 @@ public class Growable : MonoBehaviour
         {
             OnDestroyed(new System.EventArgs());
         }
+        OnDestroyed = null;
     }
 }

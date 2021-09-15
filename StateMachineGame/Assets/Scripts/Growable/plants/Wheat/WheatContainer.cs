@@ -8,6 +8,7 @@ public class WheatContainer : MonoBehaviour
     Coroutine checkWheat;
 
     public GameObject wheatPrefab;
+    public Vector3Int tilePos;
     public TileObject tileObject;
 
     List<Vector3> points = new List<Vector3>();
@@ -18,7 +19,9 @@ public class WheatContainer : MonoBehaviour
 
     private void Awake()
     {
-        var gobject = GameManager.Instance.tilemap.GetInstantiatedObject(Vector3Int.FloorToInt(transform.position/2));
+        var testTilePos = Vector3Int.FloorToInt(transform.localPosition * 2f);
+
+        var gobject = GameManager.Instance.tilemap.GetInstantiatedObject(testTilePos);
         TileObject tobject;
         if (gobject.TryGetComponent<TileObject>(out tobject)){
             tileObject = tobject;

@@ -25,6 +25,6 @@ public class Crop : Growable
 
     protected override void OnGrowableDestroyed()
     {
-        Destroy(this);
+        Destroy(gameObject);
     }
 }

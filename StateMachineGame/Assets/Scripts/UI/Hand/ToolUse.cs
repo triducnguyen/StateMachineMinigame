@@ -74,13 +74,12 @@ public class ToolUse : MonoBehaviour
         //update affected lattices
         foreach (var lattice in aoe)
         {
-            //use tool on tiles
-            Vector2 localPos = tilemap.transform.worldToLocalMatrix * cam.ScreenToWorldPoint(tGesture.ScreenPosition) * 2;
-            var tilePos = Vector3Int.FloorToInt((Vector2)localPos + lattice);
-            var tile = (ExtendedRuleTile)GameManager.Instance.tilemap.GetTile(tilePos);
+            Vector3Int pos = GameManager.Instance.GetTilePos(cam.ScreenToWorldPoint(tGesture.ScreenPosition));
+            pos += Vector3Int.FloorToInt(lattice);
+            var tile = GameManager.Instance.GetTile(pos);
             if (tile is object)
             {
-                tool.UseTool(tile, tilePos);
+                tool.UseTool(tile, pos);
             }
         }
     }

@@ -21,13 +21,10 @@ public class WheatSeed : Tool
             if (!tobject.occupied && tile.tile.Contains("tilled"))
             {
                 //add wheat object to this pos
-                tobject.SetOccupier(GameObject.Instantiate(wheatContainerPrefab, GameManager.Instance.worldObjects.transform));
-                var wheatContainer = tobject.occupier.GetComponent<WheatContainer>();
                 Vector3 localPos = (Vector3)pos / 2f;
                 Vector3 worldPos = GameManager.Instance.tilemap.transform.localToWorldMatrix * localPos;
-                tobject.occupier.transform.position = worldPos + new Vector3(.25f,.25f);
-                //Debug.Log(tobject.transform.position);
-                tobject.occupied = true;
+                tobject.SetOccupier(GameObject.Instantiate(wheatContainerPrefab, worldPos + new Vector3(.25f, .25f), Quaternion.identity, GameManager.Instance.worldObjects.transform));
+                var wheatContainer = tobject.occupier.GetComponent<WheatContainer>();
             }
         }
 

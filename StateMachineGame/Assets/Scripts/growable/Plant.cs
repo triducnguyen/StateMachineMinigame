@@ -57,4 +57,9 @@ public class Plant : Growable
             Destroy(crop);
         }
     }
+
+    IEnumerator CheckWater()
+    {
+        yield return null;
+    }
 }

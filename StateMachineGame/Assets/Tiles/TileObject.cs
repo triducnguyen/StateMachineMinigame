@@ -8,18 +8,7 @@ public class TileObject : MonoBehaviour
 
     public delegate void TileChanged(object sender, System.EventArgs args);
     public event TileChanged Destroyed;
-    public GameObject occupier
-    {
-        get
-        {
-            return _occupier;
-        }
-        set
-        {
-            _occupier = value;
-        }
-    }
-    GameObject _occupier = null;
+    public GameObject occupier;
 
     public bool occupied = false;
 
@@ -52,14 +41,17 @@ public class TileObject : MonoBehaviour
     public void SetOccupier(GameObject occupier)
     {
         this.occupier = occupier;
-        CheckOccupied();
+        occupied = true;
     }
 
     public virtual void DestroyOccupier()
     {
-        Destroy(occupier);
-        occupier = null;
-        CheckOccupied();
+        if (occupier != null)
+        {
+            Destroy(occupier);
+            occupier = null;
+            occupied = false;
+        }
     }
 
     private void OnDestroy()
