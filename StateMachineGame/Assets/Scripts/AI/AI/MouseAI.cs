@@ -29,6 +29,7 @@ public class MouseAI : AI
 
         behaviours.Add(wander);
         behaviours.Add(scare);
+        StartCoroutine(CheckScare());
     }
 
     // Start is called before the first frame update
@@ -46,17 +47,23 @@ public class MouseAI : AI
         {
             yield return new WaitForSeconds(.1f);
             //get distance from closest cat
-            var cats = manager.ai.Find(match => match.GetType() == typeof(CatAI));
+            List<AI> cats = manager.ai.FindAll(match => match.GetType() == typeof(CatAI));
             float dist = 0f;
-            //find closest cat
-            //check distance
-            if (dist < 3f)
+            foreach (AI cat in cats)
             {
-                scared = true;
-            }
-            else
-            {
-                scared = false;
+                scare.cat = cat.transform;
+                dist = Vector3.Distance(this.transform.position, cat.transform.position);
+                Debug.Log(dist);
+                //check distance
+                if (dist < 2f)
+                {
+                    scared = true;
+                }
+                else
+                {
+                    scared = false;
+                    Debug.Log(scared);
+                }
             }
             
         }
