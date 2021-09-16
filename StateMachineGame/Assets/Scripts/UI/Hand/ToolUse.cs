@@ -44,17 +44,17 @@ public class ToolUse : MonoBehaviour
 
     void Configure()
     {
-        tool = GameManager.Instance.tool;
+        tool = GameManager.instance.tool;
         List<Vector2> baseLattice;
-        if (TileDictionary.Instance.radius2lattice.TryGetValue(tool.toolRadius, out baseLattice))
+        if (TileDictionary.instance.radius2lattice.TryGetValue(tool.toolRadius, out baseLattice))
         {
             //lattice was already calculated, use it.
             aoe = baseLattice;
         }
         else
         {
-            TileDictionary.Instance.CalculateLattices(tool.toolRadius);
-            aoe = TileDictionary.Instance.radius2lattice[tool.toolRadius];
+            TileDictionary.instance.CalculateLattices(tool.toolRadius);
+            aoe = TileDictionary.instance.radius2lattice[tool.toolRadius];
         }
     }
 
@@ -74,9 +74,9 @@ public class ToolUse : MonoBehaviour
         //update affected lattices
         foreach (var lattice in aoe)
         {
-            Vector3Int pos = GameManager.Instance.GetTilePos(cam.ScreenToWorldPoint(tGesture.ScreenPosition));
+            Vector3Int pos = TileManager.instance.GetTilePos(cam.ScreenToWorldPoint(tGesture.ScreenPosition));
             pos += Vector3Int.FloorToInt(lattice);
-            var tile = GameManager.Instance.GetTile(pos);
+            var tile = TileManager.instance.GetTile(pos);
             if (tile is object)
             {
                 tool.UseTool(tile, pos);

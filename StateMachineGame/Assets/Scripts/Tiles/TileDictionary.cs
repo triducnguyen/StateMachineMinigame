@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TileDictionary : MonoBehaviour
+public class TileDictionary : Singleton<TileDictionary>
 {
-    public static TileDictionary Instance;
-
     public List<ExtendedRuleTile> tileList;
 
     public Dictionary<float, List<Vector2>> radius2lattice = new Dictionary<float, List<Vector2>>();
@@ -22,9 +20,9 @@ public class TileDictionary : MonoBehaviour
         }
     }
 
-    private void Awake()
+    protected override void Awake()
     {
-        CheckSingleton();
+        base.Awake();
 
         //add common lengths to reduce computation during play
         for (var i = 1; i<11; i++)
@@ -73,18 +71,6 @@ public class TileDictionary : MonoBehaviour
 
         // add all latice points to dictionary
         radius2lattice[r] = lattices;
-    }
-
-    void CheckSingleton()
-    {
-        if (Instance is object)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
     }
 }
 

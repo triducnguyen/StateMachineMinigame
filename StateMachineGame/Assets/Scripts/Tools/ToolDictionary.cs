@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToolDictionary : MonoBehaviour
+public class ToolDictionary : Singleton<ToolDictionary>
 {
-    public static ToolDictionary Instance;
     public List<Sprite> sprites = new List<Sprite>();
 
     public Dictionary<string, Tool> tools = new Dictionary<string, Tool>();
 
-    private void Awake()
+    protected override void Awake()
     {
-        CheckSingleton();
+        base.Awake();
         //add all tools to dictionary
         tools["WaterCan"] = new WaterCan(sprites[0]);
         tools["HandCultivator"] = new Cultivator(sprites[1]);
@@ -19,17 +18,5 @@ public class ToolDictionary : MonoBehaviour
         tools["WheatSeed"] = new WheatSeed(sprites[3]);
         tools["Fertilizer"] = new Fertilizer(sprites[4]);
         tools["hand"] = new HandTool(sprites[5]);
-    }
-
-    void CheckSingleton()
-    {
-        if(Instance is object)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
     }
 }

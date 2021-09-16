@@ -12,6 +12,48 @@ public class Plant : Growable
     [SerializeField]
     protected int minCrops = 1;
 
+    public bool hydrated = false;
+    public float hydrationThreshold = 10f;
+    public float hydrationHealThreshold = 10f;
+
+    public float hydrationCap = 15f;
+    public float baseHydration = 5f;
+    public float hydrationModifier = 1f;
+    public float hydrationRate { get => baseHydration * hydrationModifier; }
+    public float hydratedGrowthRate = 3f;
+    protected float hydration
+    {
+        get
+        {
+            return _hydration;
+        }
+        set
+        {
+
+            if (value > hydrationCap)
+            {
+                _hydration = hydrationCap;
+            }else
+            if (value <= 0)
+            {
+                _hydration = 0;
+            }
+            else
+            {
+                _hydration = value;
+            }
+        }
+    }
+    [SerializeField]
+    float _hydration = 10f;
+
+    public float dehydrationInterval = 1f;
+    public float baseDehydration = 1f;
+    public float dehydrationModifier = 0f;
+    public float dehydrationRate
+    {
+        get => baseDehydration +  dehydrationModifier;
+    }
     protected int randomYield
     {
         get
@@ -31,6 +73,10 @@ public class Plant : Growable
     //list of currently growing crops
     public List<GameObject> growingCrops = new List<GameObject>();
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     public virtual void Harvest()
     {
@@ -58,8 +104,49 @@ public class Plant : Growable
         }
     }
 
-    IEnumerator CheckWater()
+    protected override void Subscribe()
     {
-        yield return null;
+        StartRoutine("checkwater", CheckWater(dehydrationInterval, TileManager.instance.GetTilePos(transform.position)));
+        base.Subscribe();
+    }
+
+    public IEnumerator CheckWater(float interval, Vector3Int tilePos)
+    {
+        yield return new WaitForSeconds(interval);
+        
+        //hydrate the plant before killing it
+        ExtendedRuleTile tile = TileManager.instance.GetTile(tilePos);
+        if (tile.tile.Contains("wet") && TileManager.instance.wateredTiles.ContainsKey(tilePos))
+        {
+            //plant is watered, slowly use it
+            TileManager.instance.wateredTiles[tilePos] -= hydrationRate;
+            hydration += hydrationRate;
+        }
+        else
+        {
+            //not hydrated
+            hydration -= dehydrationRate;
+        }
+        if (hydration >= hydrationThreshold)
+        {
+            //increase growth rate
+            growthCycleModifier = hydratedGrowthRate;
+        }
+        else
+        {
+            growthCycleModifier = baseGrowthCycleModifier;
+        }
+        if (hydration > hydrationHealThreshold)
+        {
+            //heal plant if hydrated enough
+            health++;
+        }
+        if (hydration == 0)
+        {
+            //hurt the plant, it is very thirsty!
+            Debug.Log("Hurting plant @ "+transform.position);
+            health--;
+        }
+        
     }
 }

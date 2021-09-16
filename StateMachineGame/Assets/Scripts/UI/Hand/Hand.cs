@@ -18,9 +18,9 @@ public class Hand : MonoBehaviour
 
     private void Awake()
     {
-        canvas = GameManager.Instance.canvas;
-        cam = GameManager.Instance.cam;
-        tool = GameManager.Instance.tool;
+        canvas = GameManager.instance.canvas;
+        cam = GameManager.instance.cam;
+        tool = GameManager.instance.tool;
         toolImage.sprite = tool.sprite;
         var color = toolImage.color;
         if (tool.type != "hand")
@@ -30,7 +30,7 @@ public class Hand : MonoBehaviour
         toolTransform = toolImage.GetComponent<RectTransform>();
         baseTransform = GetComponent<RectTransform>();
         toolTransform.anchoredPosition = tool.offset;
-        StartCoroutine(UpdateHand());
+        Coroutines.instance.AddCoroutine("updatehand",UpdateHand());
     }
 
     private void Start()
@@ -40,7 +40,7 @@ public class Hand : MonoBehaviour
 
     
 
-    IEnumerator UpdateHand()
+    public IEnumerator UpdateHand()
     {
         while (true)
         {
@@ -48,42 +48,12 @@ public class Hand : MonoBehaviour
             float width = height * (68.75f / 56.25f);
             handTransform.localScale = new Vector3(width, height, 1);
             toolTransform.localScale = new Vector3(2f, 2f, 1);
-            
             yield return new WaitForSeconds(.05f);
-            
         }
     }
 
-    private void Update()
-    {
-        
-    }
-
-    //private void OnTriggerEnter2D(Collider2D other)
-    //{
-    //    TileObject tile;
-    //    if (other.gameObject.CompareTag("tile") &&
-    //        other.TryGetComponent<TileObject>(out tile) &&
-    //        !tiles.Contains(tile))
-    //    {
-    //        tiles.Add(tile);
-    //    }
-
-    //}
-
-    //private void OnTriggerExit2D(Collider2D other)
-    //{
-    //    TileObject tile;
-    //    if (other.gameObject.CompareTag("tile") &&
-    //        TryGetComponent<TileObject>(out tile) &&
-    //        tiles.Contains(tile))
-    //    {
-    //        tiles.Remove(tile);
-    //    }
-    //}
-
     private void OnDestroy()
     {
-        handAnimator.Play("HandOpen");
+        Coroutines.instance.DelCoroutine("updatehand");
     }
 }

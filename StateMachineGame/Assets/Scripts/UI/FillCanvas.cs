@@ -9,7 +9,7 @@ public class FillCanvas : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        canvas = GameManager.Instance.canvas;
+        canvas = GameManager.instance.canvas;
     }
 
     // Update is called once per frame

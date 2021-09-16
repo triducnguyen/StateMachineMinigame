@@ -21,7 +21,7 @@ public class WheatContainer : MonoBehaviour
     {
         var testTilePos = Vector3Int.FloorToInt(transform.localPosition * 2f);
 
-        var gobject = GameManager.Instance.tilemap.GetInstantiatedObject(testTilePos);
+        var gobject = TileManager.instance.tilemap.GetInstantiatedObject(testTilePos);
         TileObject tobject;
         if (gobject.TryGetComponent<TileObject>(out tobject)){
             tileObject = tobject;

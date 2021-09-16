@@ -21,11 +21,11 @@ public class ToolList : MonoBehaviour
 
     private void Awake()
     {
-        AddTool(ToolDictionary.Instance.tools["WaterCan"]) ;
-        AddTool(ToolDictionary.Instance.tools["HandCultivator"]) ;
-        AddTool(ToolDictionary.Instance.tools["HandClippers"]) ;
-        AddTool(ToolDictionary.Instance.tools["WheatSeed"]) ;
-        AddTool(ToolDictionary.Instance.tools["Fertilizer"]) ;
+        AddTool(ToolDictionary.instance.tools["WaterCan"]) ;
+        AddTool(ToolDictionary.instance.tools["HandCultivator"]) ;
+        AddTool(ToolDictionary.instance.tools["HandClippers"]) ;
+        AddTool(ToolDictionary.instance.tools["WheatSeed"]) ;
+        AddTool(ToolDictionary.instance.tools["Fertilizer"]) ;
     }
 
     public void Up()
@@ -50,14 +50,14 @@ public class ToolList : MonoBehaviour
     {
         if (tools.Count > 0)
         {
-            GameManager.Instance.tool = tools[0];
+            GameManager.instance.tool = tools[0];
         }
     }
 
     public void Select2()
     {
         if(tools.Count > 1){
-            GameManager.Instance.tool = tools[1];
+            GameManager.instance.tool = tools[1];
         }
     }
 
@@ -65,7 +65,7 @@ public class ToolList : MonoBehaviour
     {
         if(tools.Count > 2)
         {
-            GameManager.Instance.tool = tools[2];
+            GameManager.instance.tool = tools[2];
         }
     }
 

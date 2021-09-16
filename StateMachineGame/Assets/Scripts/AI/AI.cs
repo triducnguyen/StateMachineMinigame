@@ -71,7 +71,7 @@ public class AI : MonoBehaviour
         behaviourCheck = StartCoroutine(CheckNew());
         if (manager is null)
         {
-            manager = GameManager.Instance;
+            manager = GameManager.instance;
         }
         if (!manager.ai.Contains(this))
         {

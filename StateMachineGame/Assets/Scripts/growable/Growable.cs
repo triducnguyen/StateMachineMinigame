@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -21,11 +22,14 @@ public class Growable : MonoBehaviour
     //sprite renderer
     public SpriteRenderer spriteRenderer;
 
-    //corouting for growing
-    protected Coroutine grow;
+    //coroutines
+    protected Dictionary<string, Coroutine> coroutines = new Dictionary<string, Coroutine>();
+
+    //specific coroutine
+    int growIndex = 0;
 
     //plants starting health
-    protected float startHealth = 10;
+    public float startHealth = 10;
 
     //plant's current health
     public float health
@@ -36,6 +40,16 @@ public class Growable : MonoBehaviour
         }
         protected set
         {
+            if (value > _health)
+            {
+                OnHealthChanged();
+                OnHeal();
+            }else
+            if (value < _health)
+            {
+                OnHealthChanged();
+                OnHurt();
+            }
             if (value <= 0)
             {
                 //growable has died
@@ -45,9 +59,11 @@ public class Growable : MonoBehaviour
             {
                 _health = value;
             }
+            
         }
     }
-    protected float _health;
+    [SerializeField]
+    protected float _health = 10f;
 
     //max health of plant. Based on starting health, growth stage, and health modifier.
     public float maxHealth
@@ -70,7 +86,8 @@ public class Growable : MonoBehaviour
     //determines base line for how much plant grows per cycle
     public float baseCycleGrowth = 1f;
     //a modifier that changes how much plant grows per cycle
-    public float growthCycleModifier = .2f;
+    public float baseGrowthCycleModifier = 1f;
+    public float growthCycleModifier = 1f;
 
     //how long a growth cycle takes in seconds
     public float cycleLength = 1f;
@@ -151,22 +168,54 @@ public class Growable : MonoBehaviour
     {
         OnStageUp += StageUp;
         OnFinalStage += FinalStage;
+        StartRoutine("grow", Grow());
     }
     protected virtual void Unsubscribe()
     {
         OnStageUp -= StageUp;
         OnFinalStage -= FinalStage;
+        StopRoutines();
+    }
+
+    protected virtual void StartRoutine(string name, IEnumerator routine)
+    {
+        coroutines[name] = StartCoroutine(routine);
+    }
+
+    protected virtual void StopRoutine(string name)
+    {
+        StopCoroutine(coroutines[name]);
+        coroutines.Remove(name);
+    }
+
+    protected virtual void StopRoutines()
+    {
+        List<string> remove = new List<string>();
+        for (var i = coroutines.Values.Count-1; i>=0; i--)
+        {
+            var pair = coroutines.ToList()[i];
+            var routine = pair.Value;
+            if (routine != null)
+            {
+                StopCoroutine(routine);
+            }
+            remove.Add(pair.Key);
+        }
+        foreach (var key in remove)
+        {
+            coroutines.Remove(key);
+        }
     }
 
     protected virtual void StartGrow()
     {
-        grow = StartCoroutine(Grow());
+        StartRoutine("grow",Grow());
 
     }
 
     protected virtual void StopGrow()
     {
-        StopCoroutine(grow);
+        StopRoutine("grow");
     }
 
     protected virtual IEnumerator Grow()
@@ -175,13 +224,26 @@ public class Growable : MonoBehaviour
         {
             if (canGrow)
             {
-                //plant grows faster as it gains more stages
-                growth += baseCycleGrowth + (growthCycleModifier * stage);
+                growth += baseCycleGrowth * (UnityEngine.Random.Range(0.5f, 1.5f)*growthCycleModifier);
             }
             yield return new WaitForSeconds(cycleLength);
         }
     }
 
+    protected virtual void OnHealthChanged()
+    {
+
+    }
+
+    protected virtual void OnHeal()
+    {
+
+    }
+
+    protected virtual void OnHurt()
+    {
+
+    }
 
     protected virtual void OnGrowableDestroyed()
     {
@@ -195,7 +257,7 @@ public class Growable : MonoBehaviour
         if (OnDestroyed != null)
         {
             OnDestroyed(new System.EventArgs());
+            OnDestroyed = null;
         }
-        OnDestroyed = null;
     }
 }

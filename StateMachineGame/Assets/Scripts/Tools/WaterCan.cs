@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class WaterCan : Tool
 {
-    public float dryInterval = 1f;
+    public float wetnessCap = 15f;
+    public float hydration = 3f;
+    
+    public float dryInterval = .5f;
 
-    public Dictionary<Vector3Int, float> wateredTiles = new Dictionary<Vector3Int, float>();
 
     public WaterCan(Sprite sprite):base("Water Can","WaterCan", "water", 2f, sprite)
     {
@@ -15,47 +17,44 @@ public class WaterCan : Tool
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
+        if (TileManager.instance.wateredTiles.ContainsKey(pos))
+        {
+            //returning customer, I see
+            TileManager.instance.wateredTiles[pos] += hydration * level;
+
+        }
+        else
         if (tile.tile.Contains("dry"))
         {
-            string tiletype = tile.tile.Replace("dry","wet");
+            //turn the tile wet
+            string tiletype = tile.tile.Replace("dry", "wet");
             SetTile(tiletype, pos);
-            wateredTiles[pos] = level * 10;
-
-            //start coroutine to dry off
-            GameObject gobject;
-            TileObject tobject = GameManager.Instance.GetTObject(pos, out gobject);
-            tobject.StartCoroutine(Dry(dryInterval, pos));
-        }else
-        if (tile.tile.Contains("wet"))
+        }
+        else
         {
-            if (!wateredTiles.ContainsKey(pos))
-            {
-                wateredTiles[pos] = level * 10;
-                //start drying out the new tile
-                GameObject gobject;
-                TileObject tobject = GameManager.Instance.GetTObject(pos, out gobject);
-                tobject.StartCoroutine(Dry(dryInterval, pos));
-            }
-            //update wetness
-            wateredTiles[pos] = level * 10;
+            //store how wet this position is
+            TileManager.instance.wateredTiles[pos] = level * 10;
+            //start coroutine to dry the tile
+            Coroutines.instance.AddCoroutine("dry" + pos, Dry(dryInterval, pos));
         }
     }
 
-    IEnumerator Dry(float interval, Vector3Int pos)
+    public IEnumerator Dry(float interval, Vector3Int pos)
     {
         
-        while (wateredTiles[pos] > 0)
+        while (TileManager.instance.wateredTiles[pos] > 0)
         {
             yield return new WaitForSeconds(interval);
             //dry out a little
-            wateredTiles[pos] -= 3f + UnityEngine.Random.Range(-.5f,.5f);    
+            TileManager.instance.wateredTiles[pos] -= 3f + UnityEngine.Random.Range(-.5f,.5f);    
         }
-        wateredTiles.Remove(pos);
-        var tile = GameManager.Instance.GetTile(pos);
+        TileManager.instance.wateredTiles.Remove(pos);
+        var tile = TileManager.instance.GetTile(pos);
         if (tile.tile.Contains("wet"))
         {
             SetTile(tile.tile.Replace("wet", "dry"), pos);
-            yield break;
         }
+        Coroutines.instance.DelCoroutine("dry" + pos);
+        yield break;
     }
 }

@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToolUseDictionary : MonoBehaviour
+public class ToolUseDictionary : Singleton<ToolUseDictionary>
 {
     public static ToolUseDictionary Instance;
 
     public Dictionary<System.Tuple<string, string>, string> ToolUse = new Dictionary<System.Tuple<string, string>, string>();
     
-    TileDictionary tiles = TileDictionary.Instance;
-    ToolDictionary tools = ToolDictionary.Instance;
+    TileDictionary tiles = TileDictionary.instance;
+    ToolDictionary tools = ToolDictionary.instance;
 
 
     private void Awake()

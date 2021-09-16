@@ -11,7 +11,7 @@ public class Harvester : Tool
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
-        TileObject tobject = GameManager.Instance.tilemap.GetInstantiatedObject(pos).GetComponent<TileObject>();
+        TileObject tobject = TileManager.instance.tilemap.GetInstantiatedObject(pos).GetComponent<TileObject>();
         if (tobject.occupier != null)
         {
             var plants = tobject.occupier.GetComponentsInChildren<Plant>();

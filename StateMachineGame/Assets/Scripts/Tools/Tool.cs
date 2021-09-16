@@ -65,9 +65,9 @@ public class Tool
 
     protected void SetTile(string tile, Vector3Int pos)
     {
-        GameManager.Instance.tilemap.SetTile(
+        TileManager.instance.tilemap.SetTile(
                     pos,
-                    TileDictionary.Instance.tiles[tile]
+                    TileDictionary.instance.tiles[tile]
                 );
     }
 }

@@ -19,7 +19,6 @@ public class Wheat : Plant
         //introduce some randomness
         baseCycleGrowth += UnityEngine.Random.Range(0f, 1f)/2;
         yield = randomYield;
-        StartGrow();
     }
 
     public override void Harvest()
@@ -56,5 +55,10 @@ public class Wheat : Plant
             AddCrop(growableCrops[0]);
             //Debug.Log("growingcrops: "+growingCrops.Count);
         }
+    }
+
+    protected override void OnHealthChanged()
+    {
+        //indicate that the plant's health has altered
     }
 }
