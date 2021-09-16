@@ -44,22 +44,19 @@ public class Growable : MonoBehaviour
             {
                 OnHealthChanged();
                 OnHeal();
-            }else
+            }
+            else
             if (value < _health)
             {
                 OnHealthChanged();
                 OnHurt();
             }
-            if (value <= 0)
+            _health = value >= maxHealth ? maxHealth : value <= 0 ? 0 : value;
+            if (_health <= 0)
             {
                 //growable has died
                 OnGrowableDestroyed();
             }
-            else
-            {
-                _health = value;
-            }
-            
         }
     }
     [SerializeField]
@@ -145,10 +142,13 @@ public class Growable : MonoBehaviour
 
     protected virtual void Awake()
     {
-        GameObject gobject = GameObject.Instantiate(new GameObject(), transform);
-
-        gobject.name = "Sprite";
-        spriteRenderer = gobject.AddComponent<SpriteRenderer>();
+        if (spriteRenderer == null)
+        {
+            GameObject gobject = GameObject.Instantiate(new GameObject(), transform);
+            gobject.name = "Sprite";
+            spriteRenderer = gobject.AddComponent<SpriteRenderer>();
+            
+        }
         StartGrow();
     }
 

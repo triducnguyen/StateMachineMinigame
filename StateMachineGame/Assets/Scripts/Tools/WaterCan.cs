@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class WaterCan : Tool
 {
-    public float wetnessCap = 15f;
+    public float wetnessCap = 20f;
     public float hydration = 3f;
-    
-    public float dryInterval = .5f;
+    public float dryRate = 1f;
+    public float dryInterval = 2f;
 
 
     public WaterCan(Sprite sprite):base("Water Can","WaterCan", "water", 2f, sprite)
@@ -21,7 +21,10 @@ public class WaterCan : Tool
         {
             //returning customer, I see
             TileManager.instance.wateredTiles[pos] += hydration * level;
-
+            if (TileManager.instance.wateredTiles[pos] >= wetnessCap)
+            {
+                TileManager.instance.wateredTiles[pos] = wetnessCap;
+            }
         }
         else
         if (tile.tile.Contains("dry"))
@@ -46,7 +49,7 @@ public class WaterCan : Tool
         {
             yield return new WaitForSeconds(interval);
             //dry out a little
-            TileManager.instance.wateredTiles[pos] -= 3f + UnityEngine.Random.Range(-.5f,.5f);    
+            TileManager.instance.wateredTiles[pos] -= dryRate + UnityEngine.Random.Range(0f,2f);    
         }
         TileManager.instance.wateredTiles.Remove(pos);
         var tile = TileManager.instance.GetTile(pos);

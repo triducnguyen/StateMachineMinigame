@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8061916083198478372}
   - component: {fileID: 8061916083198478373}
-  - component: {fileID: 8061916083198478378}
+  - component: {fileID: 2772834331427246203}
   - component: {fileID: 4352088171956857779}
   m_Layer: 0
   m_Name: Wheat
@@ -53,7 +53,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &8061916083198478378
+--- !u!114 &2772834331427246203
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,17 +67,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8061916083198478373}
   spriteRenderer: {fileID: 8061916083828329660}
+  startHealth: 10
+  _health: 10
   stage: 0
-  stages: 12
+  stages: 5
   startGrowth: 10
   growthModifier: 1.2
   baseCycleGrowth: 1
-  growthCycleModifier: 0.5
+  baseGrowthCycleModifier: 1
+  growthCycleModifier: 1
   cycleLength: 1
   canGrow: 1
   _growth: 0
   maxCrops: 5
   minCrops: 1
+  healing: 0
+  _hydrated: 0
+  hydrationThreshold: 10
+  hydrationHealThreshold: 10
+  hydrationCap: 15
+  baseHydration: 5
+  hydrationModifier: 1
+  hydratedGrowthRate: 3
+  _hydration: 10
+  dehydrationInterval: 5
+  baseDehydration: 1
+  dehydrationModifier: 0
   yield: 1
   growableCrops:
   - {fileID: 4985847464200551251, guid: d977035b9a2f4fc4da7dfc0b55494f84, type: 3}
@@ -94,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181688d9489acf445a3e08fd05f5e83c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastPos: {x: 0, y: 0, z: 0}
   target: {fileID: 8061916083198478372}
   spriteRenderer: {fileID: 8061916083828329660}
 --- !u!1 &8061916083828329634

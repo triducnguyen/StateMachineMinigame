@@ -12,7 +12,19 @@ public class Plant : Growable
     [SerializeField]
     protected int minCrops = 1;
 
-    public bool hydrated = false;
+    public bool healing = false;
+
+    public bool hydrated
+    {
+        get { return _hydrated; }
+        protected set
+        {
+            growthCycleModifier = value? hydratedGrowthRate : baseGrowthCycleModifier;
+            _hydrated = value;
+        }
+    }
+    [SerializeField]
+    bool _hydrated;
     public float hydrationThreshold = 10f;
     public float hydrationHealThreshold = 10f;
 
@@ -29,25 +41,20 @@ public class Plant : Growable
         }
         set
         {
-
-            if (value > hydrationCap)
-            {
-                _hydration = hydrationCap;
-            }else
-            if (value <= 0)
-            {
-                _hydration = 0;
-            }
-            else
-            {
-                _hydration = value;
-            }
+            /*
+            _hydration = value > hydrationCap ? hydrationCap : _hydration;
+            _hydration = value <= 0 ? 0 : _hydration;
+            */
+            _hydration = value > hydrationCap ? hydrationCap : (value <= 0 ? 0 : value);
+            hydrated = _hydration >= hydrationThreshold ? true : false;
+            healing = _hydration > hydrationHealThreshold ? true : false;
         }
     }
+
     [SerializeField]
     float _hydration = 10f;
 
-    public float dehydrationInterval = 1f;
+    public float dehydrationInterval = 5f;
     public float baseDehydration = 1f;
     public float dehydrationModifier = 0f;
     public float dehydrationRate
@@ -96,12 +103,13 @@ public class Plant : Growable
 
     protected override void OnGrowableDestroyed()
     {
-        //uh oh. Goodbye crops.
+        //uh oh, Goodbye plant.
         for (var i = growingCrops.Count - 1; i >=0; i--)
         {
             var crop = growingCrops[i];
             Destroy(crop);
         }
+        base.OnGrowableDestroyed();
     }
 
     protected override void Subscribe()
@@ -112,41 +120,25 @@ public class Plant : Growable
 
     public IEnumerator CheckWater(float interval, Vector3Int tilePos)
     {
-        yield return new WaitForSeconds(interval);
-        
-        //hydrate the plant before killing it
-        ExtendedRuleTile tile = TileManager.instance.GetTile(tilePos);
-        if (tile.tile.Contains("wet") && TileManager.instance.wateredTiles.ContainsKey(tilePos))
+        while (true)
         {
-            //plant is watered, slowly use it
-            TileManager.instance.wateredTiles[tilePos] -= hydrationRate;
-            hydration += hydrationRate;
+            yield return new WaitForSeconds(interval);
+            ExtendedRuleTile tile = TileManager.instance.GetTile(tilePos);
+            if (tile.tile.Contains("wet") && TileManager.instance.wateredTiles.ContainsKey(tilePos))
+            {
+                //plant is watered, slowly use it
+                TileManager.instance.wateredTiles[tilePos] -= hydrationRate;
+                hydration += hydrationRate;
+            }
+            else
+            {
+                hydration -= dehydrationRate;
+            }
+            health = healing ? health++ : health;
+            if (hydration <= 0)
+            {
+                health--;
+            }
         }
-        else
-        {
-            //not hydrated
-            hydration -= dehydrationRate;
-        }
-        if (hydration >= hydrationThreshold)
-        {
-            //increase growth rate
-            growthCycleModifier = hydratedGrowthRate;
-        }
-        else
-        {
-            growthCycleModifier = baseGrowthCycleModifier;
-        }
-        if (hydration > hydrationHealThreshold)
-        {
-            //heal plant if hydrated enough
-            health++;
-        }
-        if (hydration == 0)
-        {
-            //hurt the plant, it is very thirsty!
-            Debug.Log("Hurting plant @ "+transform.position);
-            health--;
-        }
-        
     }
 }
