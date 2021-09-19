@@ -5,22 +5,11 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [Serializable]
-public class Tool
+public class Tool : Item
 {
-    public Sprite sprite;
     public Vector2 offset = Vector2.zero;
 
-    public string displayName
-    {
-        get;
-        protected set;
-    }
-    public string name
-    {
-        get;
-        protected set;
-    }
-    public string type
+    public string toolType
     {
         get;
         protected set;
@@ -56,7 +45,7 @@ public class Tool
     public float toolRadius;
 
     //tool
-    public Tool(string displayName, string name, string type, float radius, Sprite sprite) { this.displayName = displayName; this.name = name; this.type = type; toolRadius = radius; this.sprite = sprite; }
+    public Tool(string displayName, string name, string toolType, float radius, Sprite sprite) { this.displayName = displayName; itemName = name; this.type = "tool"; this.toolType = toolType; toolRadius = radius; this.sprite = sprite; }
 
     public virtual void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {

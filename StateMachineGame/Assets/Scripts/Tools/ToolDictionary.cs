@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ToolDictionary : Singleton<ToolDictionary>
@@ -7,7 +8,7 @@ public class ToolDictionary : Singleton<ToolDictionary>
     public List<Sprite> sprites = new List<Sprite>();
 
     public Dictionary<string, Tool> tools = new Dictionary<string, Tool>();
-
+    public List<Tool> toolList = new List<Tool>();
     protected override void Awake()
     {
         base.Awake();
@@ -18,5 +19,6 @@ public class ToolDictionary : Singleton<ToolDictionary>
         tools["WheatSeed"] = new WheatSeed(sprites[3]);
         tools["Fertilizer"] = new Fertilizer(sprites[4]);
         tools["hand"] = new HandTool(sprites[5]);
+        toolList = tools.ToList().Select((x)=> x.Value).ToList();
     }
 }

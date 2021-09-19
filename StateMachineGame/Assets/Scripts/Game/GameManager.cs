@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     public GameObject world;
     public GameObject worldObjects;
 
+    
+
     public List<AI> ai
     {
         get
