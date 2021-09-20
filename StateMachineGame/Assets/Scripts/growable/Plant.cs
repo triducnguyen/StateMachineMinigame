@@ -13,19 +13,19 @@ public class Plant : Growable
     protected int minCrops = 1;
 
     public bool healing = false;
-
+    public float checkWaterInterval = .5f;
     public bool hydrated
     {
         get { return _hydrated; }
         protected set
         {
-            growthCycleModifier = value? hydratedGrowthRate : baseGrowthCycleModifier;
+            //growthCycleModifier = value? hydratedGrowthRate : baseGrowthCycleModifier;
             _hydrated = value;
         }
     }
     [SerializeField]
     bool _hydrated;
-    public float hydrationThreshold = 10f;
+    public float hydrationThreshold = 4f;
     public float hydrationHealThreshold = 10f;
 
     public float hydrationCap = 15f;
@@ -45,7 +45,7 @@ public class Plant : Growable
             _hydration = value > hydrationCap ? hydrationCap : _hydration;
             _hydration = value <= 0 ? 0 : _hydration;
             */
-            _hydration = value > hydrationCap ? hydrationCap : (value <= 0 ? 0 : value);
+            _hydration = value > hydrationCap ? hydrationCap : (value < 0 ? 0 : value);
             hydrated = _hydration >= hydrationThreshold ? true : false;
             healing = _hydration > hydrationHealThreshold ? true : false;
         }
@@ -54,7 +54,7 @@ public class Plant : Growable
     [SerializeField]
     float _hydration = 10f;
 
-    public float dehydrationInterval = 5f;
+    public float dehydrationInterval = 10f;
     public float baseDehydration = 1f;
     public float dehydrationModifier = 0f;
     public float dehydrationRate
@@ -65,7 +65,7 @@ public class Plant : Growable
     {
         get
         {
-            var cropYield = Mathf.RoundToInt(UnityEngine.Random.Range(0f, 1f) * maxCrops);
+            var cropYield = Mathf.RoundToInt(UnityEngine.Random.Range(minCrops, maxCrops));
             cropYield = cropYield < minCrops ? minCrops : cropYield;
             cropYield = cropYield > maxCrops ? maxCrops : cropYield;
             return cropYield;
@@ -85,7 +85,7 @@ public class Plant : Growable
         base.Awake();
     }
 
-    public virtual void Harvest()
+    public virtual void Harvest(Tool harvester)
     {
         
     }
@@ -114,11 +114,23 @@ public class Plant : Growable
 
     protected override void Subscribe()
     {
-        StartRoutine("checkwater", CheckWater(dehydrationInterval, TileManager.instance.GetTilePos(transform.position)));
+        StartRoutine("checkwater", CheckWater(checkWaterInterval, TileManager.instance.GetTilePos(transform.position)));
+        StartRoutine("dehydrate", Dehydrate());
         base.Subscribe();
     }
 
-    public IEnumerator CheckWater(float interval, Vector3Int tilePos)
+    protected virtual Color SetSaturation(float val)
+    {
+        var currentColor = spriteRenderer.color;
+        float h;
+        float s;
+        float v;
+        Color.RGBToHSV(currentColor, out h, out s, out v);
+        s = val;
+        return Color.HSVToRGB(h, s, v);
+    }
+
+    public virtual IEnumerator CheckWater(float interval, Vector3Int tilePos)
     {
         while (true)
         {
@@ -130,15 +142,18 @@ public class Plant : Growable
                 TileManager.instance.wateredTiles[tilePos] -= hydrationRate;
                 hydration += hydrationRate;
             }
-            else
-            {
-                hydration -= dehydrationRate;
-            }
-            health = healing ? health++ : health;
-            if (hydration <= 0)
-            {
-                health--;
-            }
+            
+        }
+    }
+
+    public virtual IEnumerator Dehydrate()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(dehydrationInterval);
+            hydration -= dehydrationRate;
+            spriteRenderer.color = SetSaturation(hydration.Map(0f,hydrationThreshold,0f,1f));
+            health += healing ? 1 : (hydration <= 0 ? -1 : health);
         }
     }
 }

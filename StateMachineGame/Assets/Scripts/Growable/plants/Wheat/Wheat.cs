@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Wheat : Plant
 {
-
-
     protected override void Awake()
     {
         //growableCrops.Add(PrefabDictionary.Instance.prefabList["wheatplant"]);
@@ -15,13 +13,15 @@ public class Wheat : Plant
         animator.Play("wheat", 0, 0);
         stages = 12;
         stage = 0;
-        maxCrops = 3;
+        maxCrops = 12;
+        minCrops = 1;
+        hydrationHealThreshold = 2;
         //introduce some randomness
         baseCycleGrowth += UnityEngine.Random.Range(0f, 1f)/2;
-        yield = randomYield;
+        yield = UnityEngine.Random.Range(minCrops, maxCrops);
     }
 
-    public override void Harvest()
+    public override void Harvest(Tool harvester)
     {
         for (var i = growingCrops.Count-1; i>=0; i--)
         {
@@ -29,7 +29,7 @@ public class Wheat : Plant
             Crop crop;
             if (gobject.TryGetComponent<Crop>(out crop) && crop.harvestable)
             {
-                crop.Harvest();
+                crop.Harvest(harvester);
                 growingCrops.RemoveAt(i);
             }
         }

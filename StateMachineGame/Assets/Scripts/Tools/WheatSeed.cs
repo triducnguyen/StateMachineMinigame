@@ -5,7 +5,7 @@ using UnityEngine;
 public class WheatSeed : Tool
 {
     GameObject wheatContainerPrefab;
-
+    float cost = 0.25f;
     public WheatSeed(Sprite sprite) : base("Wheat Seeds", "WheatSeed", "seed", 1f, sprite)
     {
         wheatContainerPrefab = PrefabDictionary.Instance.prefabList["wheatplant"];
@@ -18,7 +18,8 @@ public class WheatSeed : Tool
         TileObject tobject;
         if(gobject.TryGetComponent<TileObject>(out tobject))
         {
-            if (!tobject.occupied && tile.tile.Contains("tilled"))
+            //charge user for seeds
+            if (!tobject.occupied && tile.tile.Contains("tilled") && Money.instance.Withdrawl(cost))
             {
                 //add wheat object to this pos
                 Vector3 localPos = (Vector3)pos / 2f;

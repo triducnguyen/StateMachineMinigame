@@ -17,28 +17,30 @@ public class WaterCan : Tool
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {
-        if (TileManager.instance.wateredTiles.ContainsKey(pos))
+        if (tile.thisType == "dirt")
         {
-            //returning customer, I see
-            TileManager.instance.wateredTiles[pos] += hydration * level;
-            if (TileManager.instance.wateredTiles[pos] >= wetnessCap)
+            if (TileManager.instance.wateredTiles.ContainsKey(pos))
             {
-                TileManager.instance.wateredTiles[pos] = wetnessCap;
+                //returning customer, I see
+                TileManager.instance.wateredTiles[pos] += hydration * level;
+                if (TileManager.instance.wateredTiles[pos] >= wetnessCap)
+                {
+                    TileManager.instance.wateredTiles[pos] = wetnessCap;
+                }
             }
-        }
-        else
-        if (tile.tile.Contains("dry"))
-        {
-            //turn the tile wet
-            string tiletype = tile.tile.Replace("dry", "wet");
-            SetTile(tiletype, pos);
-        }
-        else
-        {
-            //store how wet this position is
-            TileManager.instance.wateredTiles[pos] = level * 10;
-            //start coroutine to dry the tile
-            Coroutines.instance.AddCoroutine("dry" + pos, Dry(dryInterval, pos));
+            else
+            {
+                if (tile.tile.Contains("dry"))
+                {
+                    //turn the tile wet
+                    string tiletype = tile.tile.Replace("dry", "wet");
+                    SetTile(tiletype, pos);
+                }
+                //store how wet this position is
+                TileManager.instance.wateredTiles[pos] = level * 10;
+                //start coroutine to dry the tile
+                Coroutines.instance.AddCoroutine("dry" + pos, Dry(dryInterval, pos));
+            }
         }
     }
 

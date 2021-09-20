@@ -6,20 +6,15 @@ using UnityEngine;
 public class TapGestureHandler : TouchScript.Hit.HitTest
 {
     public TapGesture tapGesture;
-    public Animator animator;
-    public string[] animations;
-
-
-    public bool toggled
+    
+    public virtual bool toggled
     {
-        get { return animator.GetBool("toggled"); }
-        protected set { animator.SetBool("toggled", value); }
+        get => _toggled;
+        protected set => _toggled = value;
     }
+    bool _toggled = false;
 
-    public bool notAnimating
-    {
-        get => (animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 1);
-    }
+    
 
     protected virtual void OnEnable()
     {
@@ -34,12 +29,7 @@ public class TapGestureHandler : TouchScript.Hit.HitTest
 
     public virtual void Tap()
     {
-        Debug.Log("tapping");
-        if (notAnimating)
-        {
-            animator.Play(toggled ? animations[0] : animations[1]);
-            toggled = !toggled;
-        }
+        toggled = !toggled;
     }
 
     public virtual void TapEvent(object sender, System.EventArgs e)

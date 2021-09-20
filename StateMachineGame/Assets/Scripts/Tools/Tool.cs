@@ -27,19 +27,6 @@ public class Tool : Item
     }
     int _level = 1;
 
-    public float experience
-    {
-        get
-        {
-            return _experience;
-        }
-        protected set
-        {
-            _experience = value;
-        }
-    }
-    float _experience = 0;
-
 
     //tool area of effect
     public float toolRadius;

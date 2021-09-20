@@ -14,12 +14,14 @@ public class Crop : Growable
     [SerializeField]
     bool _harvestable;
 
-    public virtual void Harvest()
-    {
-        if (harvestable)
-        {
-            //add items to storage
+    public float baseValue = 0.25f; // 1/4th of a dollar
 
+    public virtual void Harvest(Tool harvester)
+    {
+        if (harvestable && harvester.toolType == "harvester")
+        {
+            float value = baseValue * harvester.level;
+            Money.instance.Deposit(value);
         }
     }
 

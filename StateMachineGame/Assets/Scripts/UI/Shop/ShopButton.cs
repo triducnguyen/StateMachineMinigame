@@ -4,16 +4,16 @@ using TouchScript.Gestures;
 using UnityEngine;
 
 
-public class ShopButton : TapGestureHandler
+public class ShopButton : TapAnimationHandler
 {
     public bool paused
     {
         get { return animator.GetBool("paused"); }
         protected set { animator.SetBool("paused", value); }
     }
-    public override void TapEvent(object sender, System.EventArgs e)
+    public override void Tap()
     {
-        base.TapEvent(sender, e);
+        base.Tap();
         paused = toggled;
         Time.timeScale = paused ? 0 : 1f;
     }

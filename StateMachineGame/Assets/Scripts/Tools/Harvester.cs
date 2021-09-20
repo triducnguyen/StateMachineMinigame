@@ -20,7 +20,7 @@ public class Harvester : Tool
                 for (var i = plants.Length-1; i>=0; i--)
                 {
                     var plant = plants[i];
-                    plant.Harvest();
+                    plant.Harvest(this);
                 }
             }
         }
