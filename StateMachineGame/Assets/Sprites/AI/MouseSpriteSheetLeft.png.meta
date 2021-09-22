@@ -1,34 +1,7 @@
 fileFormatVersion: 2
-guid: 377b67e26e53a7e429f3618bb86cd824
+guid: 35dc066a641a6474ab8ffd91d6958ff4
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -2319083447303029354
-    second: Crow_Peck
-  - first:
-      213: -4237870145494837455
-    second: Crow_Bend
-  - first:
-      213: -5344343339445517356
-    second: Crow_Idel2
-  - first:
-      213: -2127463886943782654
-    second: Crow_Idel1
-  - first:
-      213: 6076017217432551122
-    second: Crow_WingUp1
-  - first:
-      213: 3525350157002832846
-    second: Crow_WingUp2
-  - first:
-      213: -7026539218659340253
-    second: Crow_WingMed
-  - first:
-      213: 151903020999620419
-    second: Crow_WingDwn1
-  - first:
-      213: 6974516563681013877
-    second: Crow_WingDwn2
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -154,13 +127,55 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Crow_Peck
+      name: MouseSpriteSheetLeftRight_0
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 142
+        width: 99
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d22e3cd782d130140800000000000000
+      internalID: 4684620097141334573
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MouseSpriteSheetLeftRight_Scare_1
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 143
+        width: 105
+        height: 52
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5c8baac43037a1b0800000000000000
+      internalID: -5645490604588954533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MouseSpriteSheetLeftRight_1
       rect:
         serializedVersion: 2
         x: 2
-        y: 48
-        width: 32
-        height: 20
+        y: 93
+        width: 97
+        height: 44
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -168,62 +183,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69db30744e5f0dfd0800000000000000
-      internalID: -2319083447303029354
+      spriteID: ac5e8daa4aeefab30800000000000000
+      internalID: 4300918560170501578
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Crow_Bend
-      rect:
-        serializedVersion: 2
-        x: 38
-        y: 46
-        width: 34
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1371c8d4e8f0035c0800000000000000
-      internalID: -4237870145494837455
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Crow_Idel2
-      rect:
-        serializedVersion: 2
-        x: 73
-        y: 44
-        width: 30
-        height: 29
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4d300ae5c0415d5b0800000000000000
-      internalID: -5344343339445517356
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Crow_Idel1
+      name: MouseSpriteSheetLeftRight_Scare2
       rect:
         serializedVersion: 2
         x: 105
-        y: 40
-        width: 30
-        height: 32
+        y: 67
+        width: 106
+        height: 50
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -231,20 +204,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2097e3adddab972e0800000000000000
-      internalID: -2127463886943782654
+      spriteID: 33a59862bdd545a00800000000000000
+      internalID: 744323034248731187
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Crow_WingUp1
+      name: MouseSpriteSheetLeftRight_
       rect:
         serializedVersion: 2
-        x: 138
-        y: 42
-        width: 36
-        height: 32
+        x: 7
+        y: 32
+        width: 98
+        height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -252,20 +225,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2de79369779525450800000000000000
-      internalID: 6076017217432551122
+      spriteID: 3ae3d8a18194efd50800000000000000
+      internalID: 6772931257485311651
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Crow_WingUp2
+      name: MouseSpriteSheetLeftRight_scare3
       rect:
         serializedVersion: 2
-        x: 4
-        y: 12
-        width: 36
-        height: 23
+        x: 115
+        y: 11
+        width: 95
+        height: 43
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -273,71 +246,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ecb75092a4f8ce030800000000000000
-      internalID: 3525350157002832846
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Crow_WingMed
-      rect:
-        serializedVersion: 2
-        x: 47
-        y: 10
-        width: 37
-        height: 24
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 320957f0fc7bc7e90800000000000000
-      internalID: -7026539218659340253
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Crow_WingDwn1
-      rect:
-        serializedVersion: 2
-        x: 91
-        y: 9
-        width: 37
-        height: 25
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 347bdf62efaab1200800000000000000
-      internalID: 151903020999620419
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Crow_WingDwn2
-      rect:
-        serializedVersion: 2
-        x: 135
-        y: 6
-        width: 37
-        height: 27
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 570f842bcd57ac060800000000000000
-      internalID: 6974516563681013877
+      spriteID: 5e96ae134177ca420800000000000000
+      internalID: 2642618009980135909
       vertices: []
       indices: 
       edges: []
@@ -345,7 +255,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 68ff7c1b2ade22a46a7a5faef329c4f1
+    spriteID: 0d4ba1c47e00ebe408c4ab857a0a047d
     internalID: 0
     vertices: []
     indices: 
