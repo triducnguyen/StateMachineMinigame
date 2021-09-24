@@ -439,6 +439,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mouse
       objectReference: {fileID: 0}
+    - target: {fileID: 7935315746798911844, guid: f18c7549c553bce4684e3d199bd84cf6, type: 3}
+      propertyPath: m_FlipY
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935315746798911844, guid: f18c7549c553bce4684e3d199bd84cf6, type: 3}
+      propertyPath: m_Size.x
+      value: 0.36
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935315746798911844, guid: f18c7549c553bce4684e3d199bd84cf6, type: 3}
+      propertyPath: m_Size.y
+      value: 0.71
+      objectReference: {fileID: 0}
+    - target: {fileID: 7935315746798911844, guid: f18c7549c553bce4684e3d199bd84cf6, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f18c7549c553bce4684e3d199bd84cf6, type: 3}
 --- !u!1 &375951680
