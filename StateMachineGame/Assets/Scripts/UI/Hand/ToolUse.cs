@@ -20,7 +20,7 @@ public class ToolUse : MonoBehaviour
 
     public Tool tool;
     public List<TileObject> tiles = new List<TileObject>();
-    public List<Vector2> aoe;
+    public List<Vector2Int> aoe;
 
     Vector2 lastPos = Vector2.zero;
 
@@ -45,7 +45,7 @@ public class ToolUse : MonoBehaviour
     void Configure()
     {
         tool = GameManager.instance.tool;
-        List<Vector2> baseLattice;
+        List<Vector2Int> baseLattice;
         if (TileDictionary.instance.radius2lattice.TryGetValue(tool.toolRadius, out baseLattice))
         {
             //lattice was already calculated, use it.
@@ -72,12 +72,12 @@ public class ToolUse : MonoBehaviour
         handTransform.anchoredPosition = tGesture.ScreenPosition - (canvas.pixelRect.size / 2);
 
         //update affected lattices
+        Vector3Int pos = TileManager.instance.GetTilePos(cam.ScreenToWorldPoint(handTransform.anchoredPosition));
         foreach (var lattice in aoe)
         {
-            Vector3Int pos = TileManager.instance.GetTilePos(cam.ScreenToWorldPoint(tGesture.ScreenPosition));
-            pos += Vector3Int.FloorToInt(lattice);
+            var latticePos = pos + (Vector3Int)lattice;
             var tile = TileManager.instance.GetTile(pos);
-            if (tile is object)
+            if (tile != null)
             {
                 tool.UseTool(tile, pos);
             }

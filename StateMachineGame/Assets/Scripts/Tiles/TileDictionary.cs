@@ -7,7 +7,7 @@ public class TileDictionary : Singleton<TileDictionary>
 {
     public List<ExtendedRuleTile> tileList;
 
-    public Dictionary<float, List<Vector2>> radius2lattice = new Dictionary<float, List<Vector2>>();
+    public Dictionary<float, List<Vector2Int>> radius2lattice = new Dictionary<float, List<Vector2Int>>();
 
     public List<RadiusLattice> lattices = new List<RadiusLattice>();
     
@@ -43,17 +43,17 @@ public class TileDictionary : Singleton<TileDictionary>
     {
         //only search one quadrant
 
-        List<Vector2> lattices = new List<Vector2>();
+        List<Vector2Int> lattices = new List<Vector2Int>();
         //search a quadrant for lattice points that lie on or within a radius
-        for (var i = Mathf.RoundToInt(-r); i<0; i++)
+        for (var i = Mathf.RoundToInt(-r); i<=0; i++)
         {
-            for (var k = Mathf.RoundToInt(-r); k<0; k++)
+            for (var k = Mathf.RoundToInt(-r); k<=0; k++)
             {
                 //check if sum of squares is lessthan or equal to the radius squared
                 if (Mathf.Pow(i,2)+Mathf.Pow(k,2) <= Mathf.Pow(r,2))
                 {
                     //this lattice is within our circle, add it
-                    lattices.Add(new Vector2(i, k));
+                    lattices.Add(new Vector2Int(i, k));
                 }
             }
         }
@@ -61,13 +61,12 @@ public class TileDictionary : Singleton<TileDictionary>
         foreach (var lattice in lattices.ToArray())
         {
             //flip x
-            lattices.Add(new Vector2(-lattice.x, lattice.y));
+            lattices.Add(new Vector2Int(-lattice.x, lattice.y));
             //flip y
-            lattices.Add(new Vector2(lattice.x, -lattice.y));
+            lattices.Add(new Vector2Int(lattice.x, -lattice.y));
             //flip x and y
-            lattices.Add(new Vector2(-lattice.x, -lattice.y));
+            lattices.Add(new Vector2Int(-lattice.x, -lattice.y));
         }
-        lattices.Add(Vector2.zero);
 
         // add all latice points to dictionary
         radius2lattice[r] = lattices;
@@ -78,5 +77,5 @@ public class TileDictionary : Singleton<TileDictionary>
 public struct RadiusLattice
 {
     public float r;
-    public Vector2[] lattices;
+    public Vector2Int[] lattices;
 }
