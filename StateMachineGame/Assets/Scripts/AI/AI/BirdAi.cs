@@ -7,18 +7,21 @@ public class BirdAi : AI
 {
     protected override void Awake()
     {
-        base.Awake();
-        var fly = new WanderBehaviour(this, 3, 4f);
-        //var hungry = new HungryBehaviour(this, 1f, 1f);
         
+        base.Awake();
+        //var fly = new FlyBehaviour();
+        var move = new WanderBehaviour(this, 3, 4f);
+        //var hungry = new HungryBehaviour(this, 1f);
 
-        fly.enterConditions.Add(new Condition(() => energy <= 25));
-        fly.exitConditions.Add(new Condition(() => energy > 25, fly));
+       // fly.enterConditions.Add(new Condition(() => energy <= 25));
+        move.enterConditions.Add(new Condition(() => energy <= 25));
+        move.exitConditions.Add(new Condition(() => energy > 25, move));
 
         //hungry.exitConditions.Add(new Condition(() => energy <= 25));
 
-        behaviours.Add(fly);
-        //behaviours.Add(hungry);
+        behaviours.Add(move);
+       // behaviours.Add(hungry);
+       // behaviour.Add(fly);
     }
 
     protected override void Update()

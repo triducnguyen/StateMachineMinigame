@@ -3,21 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemList : Singleton<ItemList>
+public class ItemList : MonoBehaviour
 {
-    List<Item> items = new List<Item>();
+    public Sprite sprite;
+    public Sprite sprite2;
+    List<Item> itemList = new List<Item>();
+    public List<Item> items
+    {
+        get
+        {
+            return new List<Item>(itemList);
+        }
+    }
     //the items shown are the first three
 
     public List<Image> images = new List<Image>();
 
     private void Awake()
     {
-        base.Awake();
-        AddItem(ItemDictionary.instance.items["WaterCan1"]) ;
-        AddItem(ItemDictionary.instance.items["Cultivator"]) ;
-        AddItem(ItemDictionary.instance.items["Harvester1"]) ;
-        AddItem(ItemDictionary.instance.items["WheatSeeds"]) ;
-        AddItem(ItemDictionary.instance.items["Fertilizer"]) ;
+        AddItem(ToolDictionary.instance.tools["WaterCan"]) ;
+        AddItem(ToolDictionary.instance.tools["HandCultivator"]) ;
+        AddItem(ToolDictionary.instance.tools["HandClippers"]) ;
+        AddItem(ToolDictionary.instance.tools["WheatSeed"]) ;
+        AddItem(ToolDictionary.instance.tools["Fertilizer"]) ;
     }
 
     
@@ -25,17 +33,17 @@ public class ItemList : Singleton<ItemList>
     public void Up()
     {
         //rotate items down
-        Item last = items[items.Count-1];
-        items.RemoveAt(items.Count-1);
-        items.Insert(0, last);
+        Item last = itemList[itemList.Count-1];
+        itemList.RemoveAt(itemList.Count-1);
+        itemList.Insert(0, last);
         UpdateImages();
     }
     public void Down()
     {
         //rotate items up
-        Item first = items[0];
-        items.RemoveAt(0);
-        items.Add(first);
+        Item first = itemList[0];
+        itemList.RemoveAt(0);
+        itemList.Add(first);
         UpdateImages();
     }
 
@@ -43,7 +51,7 @@ public class ItemList : Singleton<ItemList>
     {
         if (items.Count > 0)
         {
-            if (items[0].type != "item")
+            if (items[0].type == "tool")
             {
                 GameManager.instance.tool = (Tool)items[0];
 
@@ -54,7 +62,7 @@ public class ItemList : Singleton<ItemList>
     public void Select2()
     {
         if(items.Count > 1){
-            if (items[0].type != "item")
+            if (items[0].type == "tool")
             {
                 GameManager.instance.tool = (Tool)items[1];
             }
@@ -65,7 +73,7 @@ public class ItemList : Singleton<ItemList>
     {
         if (items.Count > 2)
         {
-            if (items[0].type != "item")
+            if (items[0].type == "tool")
             {
                 GameManager.instance.tool = (Tool)items[2];
             }
@@ -96,36 +104,15 @@ public class ItemList : Singleton<ItemList>
         }
     }
 
-    public void AddItem(Item item)
+    void AddItem(Item item)
     {
-        items.Add(item);
+        itemList.Add(item);
         UpdateImages();
     }
 
-    public void RemoveItem(Item item)
+    void RemoveTool(Item item)
     {
-        if (item == GameManager.instance.tool)
-        {
-            GameManager.instance.tool = null;
-        }
-        items.Remove(item);
+        itemList.Remove(item);
         UpdateImages();
-    }
-
-    public void ReplaceItem(Item newItem, Item currentItem)
-    {
-        items.Insert(items.IndexOf(currentItem), newItem);
-        items.Remove(currentItem);
-        if (newItem.GetType() == typeof(Tool) && newItem == GameManager.instance.tool)
-        {
-            GameManager.instance.tool = null;
-            GameManager.instance.tool = (Tool)newItem;
-        }
-        UpdateImages();
-    }
-
-    public bool ContainsItem(Item item)
-    {
-        return items.Contains(item);
     }
 }

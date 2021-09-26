@@ -94,7 +94,7 @@ public class GameManager : Singleton<GameManager>
         worldObjects = worldObjects == null ? new GameObject() : worldObjects;
         worldObjects.transform.parent = world.transform;
         worldObjects.transform.position = Vector3.zero;
-        tool = (Tool)ItemDictionary.instance.items["Hand"];
+        tool = ToolDictionary.instance.tools["hand"];
     }
 
     
