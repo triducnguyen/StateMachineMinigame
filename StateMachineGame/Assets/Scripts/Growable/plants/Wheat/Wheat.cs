@@ -7,6 +7,7 @@ public class Wheat : Plant
 {
     protected override void Awake()
     {
+        GameManager.instance.growables.Add(this);
         //growableCrops.Add(PrefabDictionary.Instance.prefabList["wheatplant"]);
         Subscribe();
         animator.speed = 0;

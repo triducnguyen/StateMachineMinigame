@@ -36,19 +36,14 @@ public class GameManager : Singleton<GameManager>
     {
         get
         {
-            List<Growable> tmp = new List<Growable>();
-            foreach (Transform t in worldObjects.transform)
-            {
-                Growable current;
-                GameObject gobject = t.gameObject;
-                if (gobject.TryGetComponent(out current))
-                {
-                    tmp.Add(current);
-                }
-            }
-            return tmp;
+            return _growables;
+        }
+        set
+        {
+            _growables = value;
         }
     }
+    List<Growable> _growables = new List<Growable>();
 
 
     public Tool tool;

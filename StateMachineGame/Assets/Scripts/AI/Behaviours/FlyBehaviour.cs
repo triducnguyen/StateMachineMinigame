@@ -1,16 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FlyBehaviour : AIBehaviour
 {
-     public float Speed = 2f;   
-     public GameObject Crow;
-     private Vector2 position1 = new Vector3(-0.14f, -0.775f);
-
-    void Start()
+    public FlyBehaviour(AI ai)
     {
-        //to fly:
-        Crow.transform.position = Vector2.MoveTowards(Crow.transform.position, position1, Speed);
+        behaviourAction = new Action(() => { BirdPosOffScreen(); }) ;
+        this.ai = ai;
+        name = "fly";
+    }
+
+
+    void BirdPosOffScreen()
+    {
+        Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(-3, Screen.height, 0));
+        ai.transform.position = pos;
+        
     }
 }
