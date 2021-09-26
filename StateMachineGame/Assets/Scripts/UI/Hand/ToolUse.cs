@@ -72,8 +72,7 @@ public class ToolUse : MonoBehaviour
         handTransform.anchoredPosition = tGesture.ScreenPosition - (canvas.pixelRect.size / 2);
 
         //update affected lattices
-        var worldPos = cam.ScreenToWorldPoint(tGesture.ScreenPosition);
-        Vector3Int pos = TileManager.instance.GetTilePos(worldPos);
+        Vector3Int pos = TileManager.instance.GetTilePos(cam.ScreenToWorldPoint(handTransform.anchoredPosition));
         foreach (var lattice in aoe)
         {
             var latticePos = pos + (Vector3Int)lattice;
