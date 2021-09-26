@@ -5,27 +5,18 @@ using UnityEngine.UI;
 
 public class ItemList : MonoBehaviour
 {
-    public Sprite sprite;
-    public Sprite sprite2;
-    List<Item> itemList = new List<Item>();
-    public List<Item> items
-    {
-        get
-        {
-            return new List<Item>(itemList);
-        }
-    }
+    List<Item> items = new List<Item>();
     //the items shown are the first three
 
     public List<Image> images = new List<Image>();
 
     private void Awake()
     {
-        AddItem(ToolDictionary.instance.tools["WaterCan"]) ;
-        AddItem(ToolDictionary.instance.tools["HandCultivator"]) ;
-        AddItem(ToolDictionary.instance.tools["HandClippers"]) ;
-        AddItem(ToolDictionary.instance.tools["WheatSeed"]) ;
-        AddItem(ToolDictionary.instance.tools["Fertilizer"]) ;
+        AddItem(ItemDictionary.instance.items["WaterCan1"]) ;
+        AddItem(ItemDictionary.instance.items["Cultivator"]) ;
+        AddItem(ItemDictionary.instance.items["Harvester1"]) ;
+        AddItem(ItemDictionary.instance.items["WheatSeeds"]) ;
+        AddItem(ItemDictionary.instance.items["Fertilizer"]) ;
     }
 
     
@@ -33,17 +24,17 @@ public class ItemList : MonoBehaviour
     public void Up()
     {
         //rotate items down
-        Item last = itemList[itemList.Count-1];
-        itemList.RemoveAt(itemList.Count-1);
-        itemList.Insert(0, last);
+        Item last = items[items.Count-1];
+        items.RemoveAt(items.Count-1);
+        items.Insert(0, last);
         UpdateImages();
     }
     public void Down()
     {
         //rotate items up
-        Item first = itemList[0];
-        itemList.RemoveAt(0);
-        itemList.Add(first);
+        Item first = items[0];
+        items.RemoveAt(0);
+        items.Add(first);
         UpdateImages();
     }
 
@@ -51,7 +42,7 @@ public class ItemList : MonoBehaviour
     {
         if (items.Count > 0)
         {
-            if (items[0].type == "tool")
+            if (items[0].type != "item")
             {
                 GameManager.instance.tool = (Tool)items[0];
 
@@ -62,7 +53,7 @@ public class ItemList : MonoBehaviour
     public void Select2()
     {
         if(items.Count > 1){
-            if (items[0].type == "tool")
+            if (items[0].type != "item")
             {
                 GameManager.instance.tool = (Tool)items[1];
             }
@@ -73,7 +64,7 @@ public class ItemList : MonoBehaviour
     {
         if (items.Count > 2)
         {
-            if (items[0].type == "tool")
+            if (items[0].type != "item")
             {
                 GameManager.instance.tool = (Tool)items[2];
             }
@@ -104,15 +95,32 @@ public class ItemList : MonoBehaviour
         }
     }
 
-    void AddItem(Item item)
+    public void AddItem(Item item)
     {
-        itemList.Add(item);
+        items.Add(item);
         UpdateImages();
     }
 
-    void RemoveTool(Item item)
+    public void RemoveItem(Item item)
     {
-        itemList.Remove(item);
+        if (item == GameManager.instance.tool)
+        {
+            GameManager.instance.tool = null;
+        }
+        items.Remove(item);
+        UpdateImages();
+    }
+
+    public void ReplaceItem(Item newItem, Item currentItem)
+    {
+        
+        items.Insert(items.IndexOf(currentItem), newItem);
+        items.Remove(currentItem);
+        if (newItem.GetType() == typeof(Tool) && newItem == GameManager.instance.tool)
+        {
+            GameManager.instance.tool = null;
+            GameManager.instance.tool = (Tool)newItem;
+        }
         UpdateImages();
     }
 }
