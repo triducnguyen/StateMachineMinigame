@@ -6,7 +6,7 @@ public class WheatSeed : Tool
 {
     GameObject wheatContainerPrefab;
     float cost = 0.25f;
-    public WheatSeed(Sprite sprite) : base("Wheat Seeds", "WheatSeed", "seed", 1f, sprite)
+    public WheatSeed() : base("Wheat Seeds", "WheatSeed", "seed", 1f, ItemDictionary.instance.sprites["WheatSeeds"])
     {
         wheatContainerPrefab = PrefabDictionary.Instance.prefabList["wheatplant"];
     }

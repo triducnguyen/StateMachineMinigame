@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class Harvester : Tool
 {
-    public Harvester(Sprite sprite) : base("Hand Clippers", "HandClippers", "harvester", 1f, sprite)
-    {
-
-    }
+    public Harvester(string displayName, string itemName, float radius):
+        base(displayName, itemName, "harvester", 1f, ItemDictionary.instance.sprites[itemName])
+    {}
 
     public override void UseTool(ExtendedRuleTile tile, Vector3Int pos)
     {

@@ -9,7 +9,7 @@ public class ToolUseDictionary : Singleton<ToolUseDictionary>
     public Dictionary<System.Tuple<string, string>, string> ToolUse = new Dictionary<System.Tuple<string, string>, string>();
     
     TileDictionary tiles = TileDictionary.instance;
-    ToolDictionary tools = ToolDictionary.instance;
+    ItemDictionary tools = ItemDictionary.instance;
 
 
     private void Awake()
