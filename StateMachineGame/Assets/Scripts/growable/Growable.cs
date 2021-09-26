@@ -152,7 +152,6 @@ public class Growable : MonoBehaviour
             spriteRenderer = gobject.AddComponent<SpriteRenderer>();
             
         }
-        GameManager.instance.growables.Add(this);
         StartGrow();
     }
 

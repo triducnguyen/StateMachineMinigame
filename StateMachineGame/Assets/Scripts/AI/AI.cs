@@ -92,7 +92,7 @@ public class AI : MonoBehaviour
 
     }
 
-   virtual public void CheckNewBehviours()
+    void CheckNewBehviours()
     {
         AIBehaviour next;
         //check enter conditions on all states
@@ -120,7 +120,7 @@ public class AI : MonoBehaviour
         }
     }
 
-    virtual public void EnterBehaviour(AIBehaviour behaviour)
+    public void EnterBehaviour(AIBehaviour behaviour)
     {
         //add behaviour to active behaviours
         activeBehaviours.Add(behaviour);
@@ -128,13 +128,13 @@ public class AI : MonoBehaviour
         behaviour.OnEnter();
     }
 
-    virtual public void ExitBehaviour(AIBehaviour behaviour)
+    public void ExitBehaviour(AIBehaviour behaviour)
     {
         behaviour.OnExit();
         activeBehaviours.RemoveAt(activeBehaviours.IndexOf(behaviour));
     }
 
-    virtual public void ExitBehaviours()
+    public void ExitBehaviours()
     {
         for ( int i=activeBehaviours.Count; i>=0; i--)
         {
