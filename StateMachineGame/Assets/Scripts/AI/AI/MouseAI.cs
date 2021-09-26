@@ -147,6 +147,6 @@ public class MouseAI : AI
         {
             anim.SetBool("Moving", true);
         }
-        base.Update();
+        //base.Update();
     }
 }
