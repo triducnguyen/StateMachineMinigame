@@ -51,6 +51,7 @@ public class BirdAi : AI
     {
         base.CheckNewBehviours();
     }
+   
     protected override void Update()
     {
         base.Update();
