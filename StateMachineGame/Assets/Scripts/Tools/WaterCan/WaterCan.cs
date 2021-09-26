@@ -10,7 +10,8 @@ public class WaterCan : Tool
     public float dryInterval = 2f;
 
 
-    public WaterCan(Sprite sprite):base("Water Can","WaterCan", "water", 2f, sprite)
+    public WaterCan(string displayName, string itemName, float radius):
+        base(displayName, itemName, "water", radius, ItemDictionary.instance.sprites[itemName])
     {
         offset = new Vector2(-10f, -30f);
     }

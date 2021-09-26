@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Fertilizer : Tool
 {
-    public Fertilizer(Sprite sprite):base("Fertilizer", "Fertilizer", "fertilizer", 1f, sprite)
+    public Fertilizer():base("Fertilizer", "Fertilizer", "fertilizer", 1f, ItemDictionary.instance.sprites["Fertilizer"])
     {
 
     }

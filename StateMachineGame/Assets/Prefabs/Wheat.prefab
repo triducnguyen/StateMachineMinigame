@@ -82,6 +82,7 @@ MonoBehaviour:
   maxCrops: 5
   minCrops: 1
   healing: 0
+  checkWaterInterval: 0.5
   _hydrated: 0
   hydrationThreshold: 10
   hydrationHealThreshold: 10
@@ -95,7 +96,7 @@ MonoBehaviour:
   dehydrationModifier: 0
   yield: 1
   growableCrops:
-  - {fileID: 4985847464200551251, guid: d977035b9a2f4fc4da7dfc0b55494f84, type: 3}
+  - {fileID: 4727437851579777308, guid: e1facd73e9655cb4cbf2283bf2495114, type: 3}
   growingCrops: []
 --- !u!114 &4352088171956857779
 MonoBehaviour:
