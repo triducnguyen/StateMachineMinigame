@@ -10,20 +10,19 @@ public class BirdAi : AI
         
         base.Awake();
         var fly = new FlyBehaviour(this);
-        var fly2 = new Fly2Behaviour(this);
-        //var move = new WanderBehaviour(this, 3, 4f);
-        //var hungry = new HungryBehaviour(this, 1f);
+        var flyon = new Fly2Behaviour(this);
 
-        fly.enterConditions.Add(new Condition(() => energy >= 24)) ;
-       // fly2.enterConditions.Add(new Condition(()=> energy >= 24 && CheckForFood() != null));
-       /// fly.exitConditions.Add(new Condition(() => CheckForFood() != null));
+        fly.enterConditions.Add(new Condition(() => CheckForFood() == null));
+        fly.exitConditions.Add(new Condition(() => CheckForFood() != null));
 
-        //hungry.exitConditions.Add(new Condition(() => energy <= 25));
+        flyon.enterConditions.Add(new Condition(()=> CheckForFood() != null));
+        flyon.exitConditions.Add(new Condition(() => hunger <= 20));
 
-       // behaviours.Add(move);
-       // behaviours.Add(hungry);
-       behaviours.Add(fly);
-        behaviours.Add(fly2);
+       
+
+
+        behaviours.Add(fly);
+        behaviours.Add(flyon);
     }
     public Growable CheckForFood()
     {

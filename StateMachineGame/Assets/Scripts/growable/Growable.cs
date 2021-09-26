@@ -137,6 +137,9 @@ public class Growable : MonoBehaviour
             }
         }
     }
+
+    public static Vector3 position { get; internal set; }
+
     [SerializeField]
     protected float _growth;
 
