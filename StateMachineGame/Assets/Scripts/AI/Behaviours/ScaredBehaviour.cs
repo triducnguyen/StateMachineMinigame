@@ -12,9 +12,9 @@ public class ScaredBehaviour : AIBehaviour, IBehaviour
 {
     public float scareDistance;
     public bool reachedDestination;
-    //private Vector3 target;
     public Transform mouse;
     public Transform cat;
+    public bool scared;
 
    public ScaredBehaviour(AI ai, float scareDistance,Transform mouse,Transform cat, Action action = null)
     {
@@ -23,11 +23,13 @@ public class ScaredBehaviour : AIBehaviour, IBehaviour
         this.scareDistance = scareDistance;
         this.mouse = mouse;
         this.cat = cat; 
-        behaviourAction = action is null ? () => Scared(scareDistance) : action;
+        behaviourAction = action is null ? () => Scared() : action;
+        reachedDestination = false;
     }
 
-    public void Scared(float max)
+    public void Scared()
     {
+        
         Vector3 direction = new Vector3(cat.position.x, cat.position.y, cat.position.z);
         Vector3 oppisiteDirection = -direction;
         target = oppisiteDirection;
@@ -35,6 +37,7 @@ public class ScaredBehaviour : AIBehaviour, IBehaviour
         aStar.canSearch = true;
         aStar.SearchPath();
         aStar.DestinationReached += OnTargetReached;
+
     }
 
     public override void OnTargetReached()
@@ -45,7 +48,10 @@ public class ScaredBehaviour : AIBehaviour, IBehaviour
             //start the behaviour again
             aStar.canSearch = false;
             reachedDestination = true;
-            ai.ExitBehaviour(this);
+            if (scared)
+            {
+                Scared();
+            }
         }
     }
     public override void OnExit()
