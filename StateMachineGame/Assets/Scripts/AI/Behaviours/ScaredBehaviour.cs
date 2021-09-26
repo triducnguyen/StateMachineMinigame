@@ -27,6 +27,12 @@ public class ScaredBehaviour : AIBehaviour, IBehaviour
         reachedDestination = false;
     }
 
+    public override void OnEnter()
+    {
+        Scared();
+        base.OnEnter();
+    }
+
     public void Scared()
     {
         
@@ -48,15 +54,11 @@ public class ScaredBehaviour : AIBehaviour, IBehaviour
             //start the behaviour again
             aStar.canSearch = false;
             reachedDestination = true;
-            if (scared)
-            {
-                Scared();
-            }
         }
     }
     public override void OnExit()
     {
-        aStar.DestinationReached -= OnTargetReached;
+        //aStar.DestinationReached -= OnTargetReached;
         base.OnExit();
     }
 }

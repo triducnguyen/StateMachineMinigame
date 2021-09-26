@@ -15684,7 +15684,7 @@ MonoBehaviour:
   behaviours: []
   aStar: {fileID: 5443726006235258966}
   agro: {fileID: 5443726006354579197}
-  cat: {fileID: 0}
+  cat: {fileID: 5150120}
 --- !u!4 &5443726006235258965
 Transform:
   m_ObjectHideFlags: 0
@@ -15693,7 +15693,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5443726006235258971}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.167, y: -0.037, z: 0.5187461}
+  m_LocalPosition: {x: 0.01, y: -0.48, z: 0.5187461}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 5443726006354579196}
