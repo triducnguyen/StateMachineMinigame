@@ -65,6 +65,11 @@ public class WanderBehaviour : AIBehaviour, IBehaviour
     /// <param name="r1"></param>
     /// <param name="r2"></param>
     /// <returns></returns>
+    public override void OnEnter()
+    {
+        Explore(pauseTime);
+        base.OnEnter();
+    }
 
     public Vector2 GetRandomPos(Vector2 center, float r1, float r2)
     {
