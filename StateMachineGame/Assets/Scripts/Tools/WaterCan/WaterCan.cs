@@ -10,9 +10,10 @@ public class WaterCan : Tool
     public float dryInterval = 2f;
 
 
-    public WaterCan(string displayName, string itemName, float radius):
+    public WaterCan(string displayName, string itemName, float radius, float cost):
         base(displayName, itemName, "water", radius, ItemDictionary.instance.sprites[itemName])
     {
+        basePrice = cost;
         offset = new Vector2(-10f, -30f);
     }
 

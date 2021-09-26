@@ -5,6 +5,6 @@ using UnityEngine;
 public class WaterCan2 : WaterCan
 {
     public WaterCan2():
-        base("Water Can lvl. 2", "WaterCan2", 3f)
+        base("Water Can lvl. 2", "WaterCan2", 3f, 20f)
     {}
 }

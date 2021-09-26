@@ -5,6 +5,6 @@ using UnityEngine;
 public class Harvester2 : Harvester
 {
     public Harvester2():
-        base("Scythe lvl. 2", "Harvester2", 2f)
+        base("Scythe lvl. 2", "Harvester2", 2f, 55f)
     {}
 }
