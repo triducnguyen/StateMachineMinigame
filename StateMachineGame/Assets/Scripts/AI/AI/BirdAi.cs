@@ -5,27 +5,31 @@ using System;
 
 public class BirdAi : AI
 {
+    public bool ReachedDest = false;
+    public bool ReachedDest1 = false;
+
     protected override void Awake()
     {
         
         base.Awake();
         //var fly = new FlyBehaviour(this);
-        var flyon = new Fly2Behaviour(this);
-        //var flyout = new FlyOutBehaviour(this);
+        var flyOn = new Fly2Behaviour(this);
+        var flyOut = new FlyOutBehaviour(this);
 
         //fly.enterConditions.Add(new Condition(() => CheckForFood() == null));
         //fly.exitConditions.Add(new Condition(() => CheckForFood() != null));
 
-        flyon.enterConditions.Add(new Condition(() => GameManager.instance.growables.Count > 5 && CheckForFood() != null));
-        flyon.exitConditions.Add(new Condition(() => hunger <= 20));
+        flyOn.enterConditions.Add(new Condition(() => GameManager.instance.growables.Count > 10 && CheckForFood() != null));
+        //fly.exitConditions.Add(new Condition(() => ReachedDest));
 
-        //flyout.enterConditions.Add(new Condition(() => hunger <= 20));
-        //flyout.exitConditions.Add(new Condition(() => hunger >= 20));
+        flyOut.enterConditions.Add(new Condition(() => ReachedDest));
+        //flyout.exitConditions.Add(new Condition(() =>ReachedDest1));
+        
        
 
         //behaviours.Add(fly);
-        behaviours.Add(flyon);
-        //behaviours.Add(flyout);
+        behaviours.Add(flyOn);
+        behaviours.Add(flyOut);
     }
     public Growable CheckForFood()
     {

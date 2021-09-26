@@ -10,14 +10,15 @@ public class Fly2Behaviour : AIBehaviour
     {
         behaviourAction = new Action(() => { FlyOnScreen(); });
         this.ai = ai;
-        name = "flyon";
+        name = "flyOn";
     }
 
     void FlyOnScreen()
     {
+        ai.aStar.DestinationReached += CropReached;
         BirdPosOnScreen();
         DoBirdMoveToCrop();
-       
+
     }
     void BirdPosOnScreen()
     {
@@ -31,7 +32,13 @@ public class Fly2Behaviour : AIBehaviour
         ai.aStar.destination = growable.transform.position;
         ai.aStar.canSearch = true;
         ai.aStar.SearchPath();
-        
+
+    }
+    void CropReached()
+    {
+        aStar.DestinationReached -= CropReached;
+        ((BirdAi)ai).ReachedDest = true;
+        ai.ExitBehaviour(this);  
     }
     /*public  IEnumerator BirdMoveToCrop(float delayTime)
     {

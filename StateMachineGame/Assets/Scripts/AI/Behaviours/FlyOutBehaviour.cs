@@ -15,8 +15,7 @@ public class FlyOutBehaviour : AIBehaviour
 
     void BirdPosFlyOffScreen()
     {
-        Vector3 pos = Camera.main.ScreenToWorldPoint(new Vector3(-3, Screen.height, 0));
-        ai.transform.position = pos;
+        ai.aStar.destination = new Vector2(5, -4);
 
     }
 }

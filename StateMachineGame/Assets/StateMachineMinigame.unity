@@ -11961,6 +11961,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5353768038750618361, guid: b2ccc791ec988d248afb06e9e858a988, type: 3}
+      propertyPath: enableRotation
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2ccc791ec988d248afb06e9e858a988, type: 3}
 --- !u!4 &1720964542 stripped
@@ -12018,6 +12022,8 @@ MonoBehaviour:
   behaviours: []
   aStar: {fileID: 1720964548}
   agro: {fileID: 0}
+  ReachedDest: 0
+  ReachedDest1: 0
 --- !u!114 &1720964548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12043,7 +12049,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   centerOffsetCompatibility: NaN
   orientation: 1
-  enableRotation: 1
+  enableRotation: 0
   targetCompatibility: {fileID: 0}
   maxAcceleration: -2.5
   rotationSpeed: 360
