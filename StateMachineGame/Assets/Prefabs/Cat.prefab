@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 47c988352f23aed469d1ca5d375fd843, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fa99f68d1a348a74fb26cd662a0a2a27, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 181688d9489acf445a3e08fd05f5e83c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastPos: {x: 0, y: 0, z: 0}
   target: {fileID: 1758022013509986110}
   spriteRenderer: {fileID: 1758022012674520087}
 --- !u!1 &1758022013029083976
@@ -225,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 966510ff5731a1a4fb0c5a63db4328f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 0}
   energy: 24
   health: 100
   hunger: 51
