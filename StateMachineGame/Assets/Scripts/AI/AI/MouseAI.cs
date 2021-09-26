@@ -12,21 +12,20 @@ public class MouseAI : AI
     private Transform mouse;
     private ScaredBehaviour scare;
     private bool scared;
-    private Animator anim;
+
     protected override void Awake()
     {
         base.Awake();
         mouse = GetComponent<Transform>();
-        anim = GetComponent<Animator>();
+
         var wander = new WanderBehaviour(this, 3, 4f);
         var scare = new ScaredBehaviour(this, 3f, mouse, cat);
         this.scare = scare;
 
-        wander.enterConditions.Add(new Condition(() => hunger <= 50 && energy >= 45 && !scared && activeBehaviours.Count == 0));
+        wander.enterConditions.Add(new Condition(() => hunger <= 50 && energy >= 45 && !scared));
         wander.exitConditions.Add(new Condition(() => scared, scare));
 
-        scare.enterConditions.Add(new Condition(() => scared && activeBehaviours.Count == 0));
-        scare.exitConditions.Add(new Condition(() => scare.reachedDestination && !scared, wander));
+        scare.exitConditions.Add(new Condition(() => scare.reachedDestination, wander));
 
         behaviours.Add(wander);
         behaviours.Add(scare);
@@ -38,7 +37,7 @@ public class MouseAI : AI
     {
         //base.Start();
         //check if mouse doesn't have a home
-        //make a home
+            //make a home
     }
 
 
@@ -48,41 +47,27 @@ public class MouseAI : AI
         {
             yield return new WaitForSeconds(.1f);
             //get distance from closest cat
-            //List<AI> cats = manager.ai.FindAll(match => match.GetType() == typeof(CatAI));
-            //float dist = 0f;
-            //foreach (AI cat in cats)
-            //{
-            //    scare.cat = cat.transform;
-            //    dist = Vector3.Distance(this.transform.position, cat.transform.position);
-            //    //check distance
-            //    if (dist < 3f)
-            //    {
-            //        scared = true;
-            //    }
-            //    else
-            //    {
-            //        scared = false;
-            //    }
-            //}
-            //Debug.Log(cats.Count);
-            scare.cat = cat;
-            dist = Vector3.Distance(mouse.position, cat.position);
-            //check distance
-            if (dist < 2f)
+            List<AI> cats = manager.ai.FindAll(match => match.GetType() == typeof(CatAI));
+            float dist = 0f;
+            foreach (AI cat in cats)
             {
-                scared = true;
-                scare.scared = true;
+                scare.cat = cat.transform;
+                dist = Vector3.Distance(this.transform.position, cat.transform.position);
+                Debug.Log(dist);
+                //check distance
+                if (dist < 2f)
+                {
+                    scared = true;
+                }
+                else
+                {
+                    scared = false;
+                    Debug.Log(scared);
+                }
             }
-            else
-            {
-                scared = false;
-                scare.scared = false;
-
-            }
-            Debug.Log("Scare? " + scared);
-            //Debug.Log(cat.position);
+            
         }
-
+        
     }
 
     // Update is called once per frame
@@ -101,52 +86,52 @@ public class MouseAI : AI
         //    Debug.Log("EnterScare " + enterScare);
         //}
 
-        float directionX = mouse.position.x - activeBehaviours[0].target.x;
-        float directionY = mouse.position.y - activeBehaviours[0].target.y;
-        if (Mathf.Abs(directionX) > Mathf.Abs(directionY))
-        {
-            if (directionX < 0)
-            {
-                anim.SetBool("Right", true);
-                anim.SetBool("Left", false);
-                anim.SetBool("Up", false);
-                anim.SetBool("Down", false);
+        //float directionX = mouse.position.x - activeBehaviours[0].target.x;
+        //float directionY = mouse.position.y - activeBehaviours[0].target.y;
+        //if (Mathf.Abs(directionX) > Mathf.Abs(directionY))
+        //{
+        //    if (directionX < 0)
+        //    {
+        //        anim.SetBool("Right", true);
+        //        anim.SetBool("Left", false);
+        //        anim.SetBool("Up", false);
+        //        anim.SetBool("Down", false);
 
-            }
-            else if (directionX > 0)
-            {
-                anim.SetBool("Left", true);
-                anim.SetBool("Right", false);
-                anim.SetBool("Up", false);
-                anim.SetBool("Down", false);
-            }
-        }
-        else if (Mathf.Abs(directionX) < Mathf.Abs(directionY))
-        {
-            if (directionY > 0)
-            {
-                anim.SetBool("Up", false);
-                anim.SetBool("Down", true);
-                anim.SetBool("Right", false);
-                anim.SetBool("Left", false);
-            }
-            else if (directionY < 0)
-            {
-                anim.SetBool("Up", true);
-                anim.SetBool("Down", false);
-                anim.SetBool("Right", false);
-                anim.SetBool("Left", false);
-            }
-        }
+        //    }
+        //    else if (directionX > 0)
+        //    {
+        //        anim.SetBool("Left", true);
+        //        anim.SetBool("Right", false);
+        //        anim.SetBool("Up", false);
+        //        anim.SetBool("Down", false);
+        //    }
+        //}
+        //else if (Mathf.Abs(directionX) < Mathf.Abs(directionY))
+        //{
+        //    if (directionY > 0)
+        //    {
+        //        anim.SetBool("Up", false);
+        //        anim.SetBool("Down", true);
+        //        anim.SetBool("Right", false);
+        //        anim.SetBool("Left", false);
+        //    }
+        //    else if (directionY < 0)
+        //    {
+        //        anim.SetBool("Up", true);
+        //        anim.SetBool("Down", false);
+        //        anim.SetBool("Right", false);
+        //        anim.SetBool("Left", false);
+        //    }
+        //}
 
-        if (aStar.canSearch == false)
-        {
-            anim.SetBool("Moving", false);
-        }
-        else
-        {
-            anim.SetBool("Moving", true);
-        }
-        base.Update();
+        //if (aStar.canSearch == false)
+        //{
+        //    anim.SetBool("Moving", false);
+        //}
+        //else
+        //{
+        //    anim.SetBool("Moving", true);
+        //}
+        //base.Update();
     }
 }
