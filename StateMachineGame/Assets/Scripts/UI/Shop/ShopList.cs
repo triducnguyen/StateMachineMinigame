@@ -11,6 +11,11 @@ public class ShopList : Singleton<ShopList>
 
     public ItemList itemList;
 
+    public Dictionary<string, Item> items
+    {
+        get => ItemDictionary.instance.items;
+    }
+
     //list of current shop items
     public List<GameObject> shopList = new List<GameObject>();
     public List<ShopItem> listed
@@ -27,15 +32,29 @@ public class ShopList : Singleton<ShopList>
         }
     }
 
+    public bool GetShopItem(Item item, out ShopItem shopItem)
+    {
+        shopItem = null;
+        foreach (var i in listed)
+        {
+            if (i.item == item)
+            {
+                shopItem = i;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void Awake()
     {
         base.Awake();
 
-        AddShopItem(ItemDictionary.instance.items["WaterCan2"]);
-        AddShopItem(ItemDictionary.instance.items["Harvester2"]);
+        AddShopItem(items["WaterCan2"], items["WaterCan1"]);
+        AddShopItem(items["Harvester2"], items["Harvester1"]);
     }
 
-    public void AddShopItem(Item item)
+    public void AddShopItem(Item item, Item toReplace = null)
     {
         //create listitem from item
         var shopItem = Instantiate(listItemPrefab);
@@ -44,7 +63,22 @@ public class ShopList : Singleton<ShopList>
         rect.parent = thisRect;
         rect.localScale = Vector3.one;
         var itemScript = shopItem.GetComponent<ShopItem>();
-        itemScript.SetItem(item);
+        itemScript.SetItem(item, toReplace);
+    }
+
+    public void DelShopItem(Item item)
+    {
+        ShopItem shopItem;
+        if (GetShopItem(item, out shopItem))
+        {
+            shopList.Remove(shopItem.gameObject);
+            Destroy(shopItem.gameObject);
+        }
+    }
+    public void DelShopItem(GameObject item)
+    {
+        shopList.Remove(item);
+        Destroy(item);
     }
 
     public void BuyItem(GameObject item)
@@ -53,18 +87,21 @@ public class ShopList : Singleton<ShopList>
         if (Money.instance.Withdrawl(itemScript.item.basePrice))
         {
             //update player's items
-            List<Item> newItems;
             if (itemScript.replaces != null)
             {
                 itemList.ReplaceItem(itemScript.item, itemScript.replaces);
             }
+
+            List<SPD> newItems;
             if (ShopProgression.instance.progression.TryGetValue(itemScript.item, out newItems))
             {
                 foreach (var newItem in newItems)
                 {
-                    AddShopItem(newItem);
+                    AddShopItem(newItem.nextItem, newItem.toReplace);
                 }
             }
+            //remove listing from shop
+            DelShopItem(item);
         }
     }
 }

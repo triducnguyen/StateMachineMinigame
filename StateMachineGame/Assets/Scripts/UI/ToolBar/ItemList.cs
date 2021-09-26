@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemList : MonoBehaviour
+public class ItemList : Singleton<ItemList>
 {
     List<Item> items = new List<Item>();
     //the items shown are the first three
@@ -12,6 +12,7 @@ public class ItemList : MonoBehaviour
 
     private void Awake()
     {
+        base.Awake();
         AddItem(ItemDictionary.instance.items["WaterCan1"]) ;
         AddItem(ItemDictionary.instance.items["Cultivator"]) ;
         AddItem(ItemDictionary.instance.items["Harvester1"]) ;
@@ -113,7 +114,6 @@ public class ItemList : MonoBehaviour
 
     public void ReplaceItem(Item newItem, Item currentItem)
     {
-        
         items.Insert(items.IndexOf(currentItem), newItem);
         items.Remove(currentItem);
         if (newItem.GetType() == typeof(Tool) && newItem == GameManager.instance.tool)
@@ -122,5 +122,10 @@ public class ItemList : MonoBehaviour
             GameManager.instance.tool = (Tool)newItem;
         }
         UpdateImages();
+    }
+
+    public bool ContainsItem(Item item)
+    {
+        return items.Contains(item);
     }
 }
