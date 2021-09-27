@@ -137,6 +137,9 @@ public class Growable : MonoBehaviour
             }
         }
     }
+
+    public static Vector3 position { get; internal set; }
+
     [SerializeField]
     protected float _growth;
 
@@ -149,6 +152,7 @@ public class Growable : MonoBehaviour
             spriteRenderer = gobject.AddComponent<SpriteRenderer>();
             
         }
+        GameManager.instance.growables.Add(this);
         StartGrow();
     }
 
