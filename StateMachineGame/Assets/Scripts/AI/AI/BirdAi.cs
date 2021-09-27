@@ -10,24 +10,48 @@ public class BirdAi : AI
 
     protected override void Awake()
     {
+        
         base.Awake();
-        var fly = new FlyBehaviour(this);
-        var fly2 = new Fly2Behaviour(this);
-        //var move = new WanderBehaviour(this, 3, 4f);
-        //var hungry = new HungryBehaviour(this, 1f);
+        //var fly = new FlyBehaviour(this);
+        var flyOn = new Fly2Behaviour(this);
+        var flyOut = new FlyOutBehaviour(this);
 
-        fly.enterConditions.Add(new Condition(() => energy >= 24)) ;
-       // fly2.enterConditions.Add(new Condition(()=> energy >= 24 && CheckForFood() != null));
-       /// fly.exitConditions.Add(new Condition(() => CheckForFood() != null));
+        //fly.enterConditions.Add(new Condition(() => CheckForFood() == null));
+        //fly.exitConditions.Add(new Condition(() => CheckForFood() != null));
 
-        //hungry.exitConditions.Add(new Condition(() => energy <= 25));
+        flyOn.enterConditions.Add(new Condition(() => GameManager.instance.growables.Count > 10 && CheckForFood() != null));
+        //fly.exitConditions.Add(new Condition(() => ReachedDest));
 
-       // behaviours.Add(move);
-       // behaviours.Add(hungry);
-       behaviours.Add(fly);
-        behaviours.Add(fly2);
+        flyOut.enterConditions.Add(new Condition(() => ReachedDest));
+        //flyout.exitConditions.Add(new Condition(() =>ReachedDest1));
+        
+       
+
+        //behaviours.Add(fly);
+        behaviours.Add(flyOn);
+        behaviours.Add(flyOut);
     }
+    public Growable CheckForFood()
+    {
+        if (GameManager.instance.growables.Count > 0)
+        {
 
+            return GameManager.instance.growables[UnityEngine.Random.Range(0, GameManager.instance.growables.Count - 1)];
+        }
+        else
+        {
+            return null;
+        }
+    }
+    public override void EnterBehaviour(AIBehaviour behaviour)
+    {
+        base.EnterBehaviour(behaviour);
+    }
+    public override void CheckNewBehviours()
+    {
+        base.CheckNewBehviours();
+    }
+   
     protected override void Update()
     {
         base.Update();
