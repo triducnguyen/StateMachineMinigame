@@ -101,56 +101,64 @@ public class MouseAI : AI
         //    Debug.Log("EnterScare " + enterScare);
         //}
 
-        float directionX = mouse.position.x - activeBehaviours[0].target.x;
-        float directionY = mouse.position.y - activeBehaviours[0].target.y;
-        if (Mathf.Abs(directionX) > Mathf.Abs(directionY))
-        {
-            if (directionX < 0)
-            {
-                anim.SetBool("Right", true);
-                anim.SetBool("Left", false);
-                anim.SetBool("Up", false);
-                anim.SetBool("Down", false);
+        float directionX;
+        float directionY;
 
-            }
-            else if (directionX > 0)
-            {
-                anim.SetBool("Left", true);
-                anim.SetBool("Right", false);
-                anim.SetBool("Up", false);
-                anim.SetBool("Down", false);
-            }
-        }
-        else if (Mathf.Abs(directionX) < Mathf.Abs(directionY))
+        if (activeBehaviours.Count!= 0)
         {
-            if (directionY > 0)
-            {
-                anim.SetBool("Up", false);
-                anim.SetBool("Down", true);
-                anim.SetBool("Right", false);
-                anim.SetBool("Left", false);
-            }
-            else if (directionY < 0)
-            {
-                anim.SetBool("Up", true);
-                anim.SetBool("Down", false);
-                anim.SetBool("Right", false);
-                anim.SetBool("Left", false);
-            }
-        }
+            directionX = mouse.position.x - activeBehaviours[0].target.x;
+            directionY = mouse.position.y - activeBehaviours[0].target.y;
 
-        if (aStar.canSearch == false)
-        {
-            anim.SetBool("Moving", false);
-            anim.SetBool("Up", false);
-            anim.SetBool("Down", false);
-            anim.SetBool("Right", false);
-            anim.SetBool("Left", false);
+            if (Mathf.Abs(directionX) > Mathf.Abs(directionY))
+            {
+                if (directionX < 0)
+                {
+                    anim.SetBool("Right", true);
+                    anim.SetBool("Left", false);
+                    anim.SetBool("Up", false);
+                    anim.SetBool("Down", false);
+
+                }
+                else if (directionX > 0)
+                {
+                    anim.SetBool("Left", true);
+                    anim.SetBool("Right", false);
+                    anim.SetBool("Up", false);
+                    anim.SetBool("Down", false);
+                }
+            }
+            else if (Mathf.Abs(directionX) < Mathf.Abs(directionY))
+            {
+                if (directionY > 0)
+                {
+                    anim.SetBool("Up", false);
+                    anim.SetBool("Down", true);
+                    anim.SetBool("Right", false);
+                    anim.SetBool("Left", false);
+                }
+                else if (directionY < 0)
+                {
+                    anim.SetBool("Up", true);
+                    anim.SetBool("Down", false);
+                    anim.SetBool("Right", false);
+                    anim.SetBool("Left", false);
+                }
+            }
+
+            if (aStar.canSearch == false)
+            {
+                anim.SetBool("Moving", false);
+                anim.SetBool("Up", false);
+                anim.SetBool("Down", false);
+                anim.SetBool("Right", false);
+                anim.SetBool("Left", false);
+            }
+            else
+            {
+                anim.SetBool("Moving", true);
+            }
         }
-        else
-        {
-            anim.SetBool("Moving", true);
-        }
+        
         //base.Update();
     }
 }
