@@ -18,7 +18,7 @@ public class Crop : Growable
 
     public virtual void Harvest(Tool harvester)
     {
-        if (harvestable && harvester.toolType == "harvester")
+        if (harvestable && harvester.type == "harvester")
         {
             float value = baseValue * harvester.level;
             Money.instance.Deposit(value);
