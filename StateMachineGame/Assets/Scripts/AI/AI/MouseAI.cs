@@ -142,6 +142,10 @@ public class MouseAI : AI
         if (aStar.canSearch == false)
         {
             anim.SetBool("Moving", false);
+            anim.SetBool("Up", false);
+            anim.SetBool("Down", false);
+            anim.SetBool("Right", false);
+            anim.SetBool("Left", false);
         }
         else
         {
